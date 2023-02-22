@@ -8,11 +8,13 @@ const loginUrl = baseUrl + 'login'
 function App() {
   useEffect( () => {
     if (localStorage.vid)
-      console.log('User found:', localStorage.vid)
+      console.log('Viewer found:', localStorage.vid)
     else
       console.log('No user found')
   }, [])
 
+//login - move to login page 
+//clear local storage on logout
   fetch( loginUrl, {
     method: 'POST', 
     headers: {
