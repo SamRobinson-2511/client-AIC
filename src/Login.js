@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 
 const baseUrl = 'http://localhost:3000/'
 const loginUrl = baseUrl + 'login'
+const logoutUrl = baseUrl + 'logout'
 
 function Login(props){
     const emailRef = useRef()
@@ -37,6 +38,15 @@ function Login(props){
             console.log(viewer)
         })
         }
+
+    const handleLogout = () => {
+        fetch( logoutUrl, {
+            headers: {}
+        })
+        localStorage.removeItem('token')
+        setViewer({email: '', password:''})
+        console.log(localStorage.vid)
+        }
      
       return (
         <div className='auth-form-container'>
@@ -54,6 +64,7 @@ function Login(props){
 
                 </form>
                 <button onClick={()=> props.onFormSwitch('register')}>Don't have an account? Register</button>
+                <button onClick={handleLogout}>Logout</button>
             </div>
     )
 }
