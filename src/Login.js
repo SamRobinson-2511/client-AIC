@@ -1,9 +1,9 @@
 import {useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-const baseUrl = 'http://localhost:3000/'
-const loginUrl = baseUrl + 'login'
-const logoutUrl = baseUrl + 'logout'
+// const baseUrl = 'http://localhost:3000/'
+// const loginUrl = baseUrl + 'login'
+// const logoutUrl = baseUrl + 'logout'
 
 function Login(props){
     const emailRef = useRef()
@@ -34,10 +34,10 @@ function Login(props){
           .then( r => r.json())
           .then( viewer => { 
             localStorage.vid = viewer.vid 
-            navigate(`/viewer_profile/${viewer.id}`)
-            console.log(viewer)
+            navigate(`/viewer_profile`)
+            console.log(viewer.vid)
         })
-        }
+      }
 
     const handleLogout = () => {
         fetch( logoutUrl, {
@@ -54,17 +54,19 @@ function Login(props){
 
                     <label htmlFor='email'>email</label>
                     <input ref={emailRef} type='email' id='email' />
-                    
-                    <label htmlFor='email'>password</label>
+                    <br/>
+              
+                    <label htmlFor='password'>password</label>
                     <input ref={passwordRef} type='password' id='password' />
                     <br/>
                     
                     <button type='submit'>Login</button>
                     <br/>
-
                 </form>
-                <button onClick={()=> props.onFormSwitch('register')}>Don't have an account? Register</button>
-                <button onClick={handleLogout}>Logout</button>
+                <br/>
+                <button className='link-btn' onClick={()=>props.onFormSwitch('register')}>Don't have an account? Register</button>
+                
+                {/* <button onClick={handleLogout}>Logout</button> */}
             </div>
     )
 }
