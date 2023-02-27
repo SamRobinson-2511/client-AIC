@@ -1,68 +1,69 @@
-import {useEffect, useState, useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
+import {useState } from 'react'
+import {useHistory} from 'react-router-dom'
 
-function Login({handleLogin}){
-    const [viewer, setViewer] = useState([])
-    const navigate = useNavigate()
-    
-    useEffect( () => {
-        if (localStorage.vid)
-          console.log('Viewer found:', localStorage.vid)
-        else
-          console.log('No user found')
-      }, [])
-    
-    // const handleLogin = (e) => {
-    //     e.preventDefault()
-    //     fetch( '/login', {
-    //         method: 'POST', 
-    //         headers: {
-    //           'Content-Type': 'application/json',
-    //           Accept: 'application/json'
-    //         }, 
-    //         body: JSON.stringify({
-    //           email: emailRef.current.value,
-    //           password: passwordRef.current.value
-    //         })
-    //       })
-    //       .then( res => res.json())
-    //       .then( viewer => { 
-    //         localStorage.vid = viewer.vid 
-    //         navigate(`/viewer_profile`)
-    //         console.log(viewer.vid)
-    //     })
-    //   }
 
-    const logOut = () => {
-        fetch( 'logout', {
-            headers: {}
-        })
-        localStorage.removeItem('token')
-        setViewer({email: '', password:''})
-        console.log(localStorage.vid)
-        }
+function Login({onFormSwitch}){
+    const [formData, setFormData] = useState({
+      email: '', 
+      password: ''
+    })
+    const [errors, setErrors] =  useState([])
+    const history = useHistory()
+
+    const {email, password} = formData
+    
+    const onSubmit = (e) => {
+      e.preventDefault()
+      const viewer = {
+        email, 
+        password
+      }
+    
+
+      fetch(`/login`,{
+        method:'POST',
+        headers:{'Content-Type': 'application/json'},
+        body:JSON.stringify(viewer)
+      })
+      .then(res => {
+          if(res.ok){
+              res.json().then(viewer => {
+                  history.push(`/viewers/${viewer.id}`)
+              })
+          }else {
+              res.json().then(json => setErrors(json.errors))
+          }
+      })
      
-      return (
-        <div className='auth-form-container'>
-                <form className='login-form' onSubmit={handleLogin} >
+  }
+    
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setFormData({...formData, [name]: value })
+  }
+  
+  return (
+    <div className='auth-form-container'>
+            <form className='login-form' onSubmit={onSubmit} >
 
-                    <label htmlFor='email'>email</label>
-                    <input ref={emailRef} type='email' id='email' />
-                    <br/>
-              
-                    <label htmlFor='password'>password</label>
-                    <input ref={passwordRef} type='password' id='password' />
-                    <br/>
-                    
-                    <button type='submit'>Login</button>
-                    <br/>
-                </form>
+                <label htmlFor='email'>email</label>
+                <input type='text' name='email' value={email} onChange={handleChange} />
                 <br/>
-                <button className='link-btn' onClick={()=>props.onFormSwitch('register')}>Don't have an account? Register</button>
+          
+                <label htmlFor='password'>password</label>
+                <input type='password' name='password' value={password} onChange={handleChange} />
+                <br/>
                 
-                {/* <button onClick={handleLogout}>Logout</button> */}
-            </div>
-    )
+                <button type='submit'>Login</button>
+                <br/>
+            </form>
+            <br/>
+            {errors&&<div>{errors}</div>}
+            <button className='link-btn' onClick={()=>onFormSwitch('register')}>Don't have an account? Register</button>
+            
+            {/* <button onClick={handleLogout}>Logout</button> */}
+        </div>
+  )
 }
 
 export default Login;
