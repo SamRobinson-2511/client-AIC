@@ -13,18 +13,27 @@ function GalleryDetail({deleteGallery}){
     //fetch one gallery 
     useEffect(()=>{
         fetch(`/galleries/${params.id}`)
-        .then(res => res.json())
-        .then(console.log)
+        .then(res => {
+            if(res.ok){
+                res.json().then(setGallery)
+            } else {
+                res.json().then(setErrors)
+            }
+        })
     }, [])
 
 
 
     function handleDelete(){
         //DELETE to `/galleries/${params.id}`
-
     }
+    const {viewer_id, art_id, title, description} = gallery
+
     return(
-        <h1>hello</h1>
+
+        <h1> render gallery details here </h1>
+        
+            
     )
 
 

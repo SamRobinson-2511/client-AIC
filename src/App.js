@@ -1,107 +1,172 @@
-import React, { useState, useEffect } from 'react'
-import ArtCard from './ArtCard'
+import React, { useState, useEffect, useRef } from 'react'
 import './App.css';
-import { Routes, Route, Link } from 'react-router-dom'
-import About from './pages/About'
+import { Routes, Route, Link, useNavigate } from 'react-router-dom'
+import Home from './Home'
+import ArtCard from './ArtCard'
+import About from './About'
+import Header from './Header'
 import Login  from './Login'
 import Register from './Register'
 import ViewerProfile from './ViewerProfile'
 import NewGalleryForm from './NewGalleryForm'
+import GalleriesList from './GalleriesList'
 import GalleryDetail from './GalleryDetail'
-
+import ArtList from './ArtList'
 import NotFound from './NotFound'
 
 
-const baseUrl = 'http://localhost:3000/'
-
-
 function App() {
+  const [loggedIn, setLoggedIn] = useState(false)
   const [art, setArt] = useState([])
-  const [gallery, setGallery] = useState([])
-  const [errors, setErrors] = useState(false)
+  const [galleries, setGalleries] = useState([])
   const [currentForm, setCurrentForm] = useState('login')
   const [viewer, setViewer] = useState({})
-  const [loggedIn, setLoggedIn] = useState(false)
-
-  const addGallery = (gallery) => setGallery(current => [...current, gallery])
-  const updateGallery = (updatedGallery) => setGallery(current => [...current, updatedGallery])
-  
-
-  useEffect(()=>{
-    fetch('/galleries')
-    .then(res => {
-      if(res.ok){
-        res.json().then(setGallery)
-      } else {
-        res.json().then(setErrors)
+  const [errors, setErrors] = useState(false)
+  const firstNameRef = useRef()
+  const lastNameRef = useRef()
+  const emailRef = useRef()
+  const passwordRef = useRef()
+  const zipCodeRef = useRef()
+  const navigate = useNavigate()
 
 
-      }
+  //handle login
+  const handleLogin = (e) => {
+    e.preventDefault()
+    fetch('/login', {
+        method: 'POST', 
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json'
+        }, 
+        body: JSON.stringify({
+          email: emailRef.current.value,
+          password: passwordRef.current.value
+        })
+      })
+      .then( res => res.json())
+      .then( viewer => { 
+        localStorage.vid = viewer.vid 
+        navigate(`/viewer_profile`)
+        console.log(viewer.vid)
     })
-  }, [])
-
+  }
   
-
-
-
+  // handleRegister
+  const handleRegister = (e) =>{
+    e.preventDefault()
+    fetch( '/register', {
+        method: 'POST', 
+        headers: { 
+          'Content-Type': 'application/json', 
+          Accept: 'application/json'
+         }, 
+         body: JSON.stringify({
+            first_name: firstNameRef.current.value, 
+            last_name: lastNameRef.current.value, 
+            email: emailRef.current.value,
+            password: passwordRef.current.value, 
+            zip_code: zipCodeRef.current.value,
+         })
+        })
+         .then( r => r.json())
+         .then( viewer => {
+            localStorage.vid = viewer.vid 
+            setViewer(viewer)
+            navigate('/about')
+         })
+        }
+    
+  //set current viewer
   function setCurrentViewer(currentViewer) {
-    setViewer(currentViewer)
-    setLoggedIn(true)
+    setViewer(currentViewer);
+    setLoggedIn(true);
   }
 
+  //logout
   function logOut(){
     setViewer({})
     setLoggedIn(false)
     localStorage.token = ""
   }
 
+  //auto login
+  useEffect(()=> {
+    const token = localStorage.getItem('token')
+    if(token){
+      fetch('auto_login', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(res=>res.json())
+      .then(data =>{
+        setViewer(data)
+        console.log(data)
+      })
+    }
+
+  }, [])
 
 
-  const toggleForm = (formName) => { setCurrentForm(formName) }
+  const handleDeleteGallery = () => {
+    fetch(`/galleries/:id`)
+  }
   
+  
+  //fetch artwork from AIC 
   const fetchArts = () => {
-    fetch(baseUrl + 'fetch_arts')
+    fetch('/arts')
     .then(r=>r.json())
     .then(art => setArt(art.data))
     console.log(art)
   }
 
-  const handleSearch = () => {
-    fetch(baseUrl + 'search_arts', {
-      method: 'POST', 
-      headers: {
-        'content-type': 'application/json', 
-        accept: 'application/json'
-      },
-      body: JSON.stringify({ search: ""})
+  //create gallery
+  //update gallery
+  const updateGallery = (updatedGallery) => setGalleries(current => {
+    return current.map(gallery => {
+      if(gallery.id === updatedGallery.id){
+        return updatedGallery
+      } else {
+        return gallery
+      }
     })
-    .then(r => r.json())
-    .then(console.log)
-  }
+  })
+  useEffect(()=>{
+      fetch('/galleries')
+      .then(res => {
+        if(res.ok){
+          res.json().then(setGalleries)
+        } else {
+          res.json().then(setErrors)
+        }
+      })
+    }, [])
+  
 
-  if(errors) return <NotFound/>
+  const toggleForm = (formName) => { setCurrentForm(formName) }
+  
+  
+  
+  
+  
+  
+  // if(errors) return <NotFound/>
   return (
     <div className="App">
-      <Routes>
-        <Route path='/about' element={<About/>}/>
-        {/* <Route path='*' element={<NotFound/>}/> */}
-      </Routes>
-      { currentForm === 'login' ? <Login onFormSwitch={toggleForm}/> : <Register onFormSwitch={toggleForm} />}  
+      <Header />
+      <GalleriesList 
+        galleries={galleries}
+        onDeleteGallery={handleDeleteGallery}
+        onAddGallery={handleAddGallery}
+        onUpdateGallery={handleUpdateGallery}
+      />
+
+       
+      { currentForm === 'login' ? <Login onFormSwitch={toggleForm} handleLogin={handleLogin}/> : <Register onFormSwitch={toggleForm} handleRegister={handleRegister}/>}  
     </div>
   );
 }
 
 export default App;
-
-
-{/* <div className="App">
-        <h2>NowMuseuMe</h2>
-            <Login/>
-            
-            
-            <div>
-              <button onClick={apiFetch}> Fetch </button>
-            </div>
-            <br/>
-            <input type='text' id='search' onChange={handleSearch}/>
-        </div> */}

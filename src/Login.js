@@ -1,13 +1,7 @@
 import {useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-// const baseUrl = 'http://localhost:3000/'
-// const loginUrl = baseUrl + 'login'
-// const logoutUrl = baseUrl + 'logout'
-
-function Login(props){
-    const emailRef = useRef()
-    const passwordRef = useRef()
+function Login({handleLogin}){
     const [viewer, setViewer] = useState([])
     const navigate = useNavigate()
     
@@ -18,29 +12,29 @@ function Login(props){
           console.log('No user found')
       }, [])
     
-    const handleLogin = (e) => {
-        e.preventDefault()
-        fetch( loginUrl, {
-            method: 'POST', 
-            headers: {
-              'content-type': 'application/json',
-              accept: 'application/json'
-            }, 
-            body: JSON.stringify({
-              email: emailRef.current.value,
-              password: passwordRef.current.value
-            })
-          })
-          .then( r => r.json())
-          .then( viewer => { 
-            localStorage.vid = viewer.vid 
-            navigate(`/viewer_profile`)
-            console.log(viewer.vid)
-        })
-      }
+    // const handleLogin = (e) => {
+    //     e.preventDefault()
+    //     fetch( '/login', {
+    //         method: 'POST', 
+    //         headers: {
+    //           'Content-Type': 'application/json',
+    //           Accept: 'application/json'
+    //         }, 
+    //         body: JSON.stringify({
+    //           email: emailRef.current.value,
+    //           password: passwordRef.current.value
+    //         })
+    //       })
+    //       .then( res => res.json())
+    //       .then( viewer => { 
+    //         localStorage.vid = viewer.vid 
+    //         navigate(`/viewer_profile`)
+    //         console.log(viewer.vid)
+    //     })
+    //   }
 
-    const handleLogout = () => {
-        fetch( logoutUrl, {
+    const logOut = () => {
+        fetch( 'logout', {
             headers: {}
         })
         localStorage.removeItem('token')
@@ -50,7 +44,7 @@ function Login(props){
      
       return (
         <div className='auth-form-container'>
-                <form class-name='login-form' onSubmit={handleLogin} className='login-form'>
+                <form className='login-form' onSubmit={handleLogin} >
 
                     <label htmlFor='email'>email</label>
                     <input ref={emailRef} type='email' id='email' />
