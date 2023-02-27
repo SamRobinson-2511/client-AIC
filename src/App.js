@@ -1,81 +1,86 @@
-import React, { useState, useEffect, useRef } from 'react'
+
+import {Switch, Route, useHistory} from 'react-router-dom'
+
+import React, { useState, useEffect } from 'react'
 import './App.css';
-import { Routes, Route, Link, useNavigate } from 'react-router-dom'
+
 import Home from './Home'
 import ArtCard from './ArtCard'
 import About from './About'
 import Header from './Header'
+import Footer from './Footer'
 import Login  from './Login'
 import Register from './Register'
 import ViewerProfile from './ViewerProfile'
 import NewGalleryForm from './NewGalleryForm'
 import GalleriesList from './GalleriesList'
+import EditGalleryForm from './EditGalleryForm'
 import GalleryDetail from './GalleryDetail'
 import ArtList from './ArtList'
 import NotFound from './NotFound'
 
-
 function App() {
+  const [isDarkMode, setIsDarkMode] = useState(true)
   const [loggedIn, setLoggedIn] = useState(false)
   const [art, setArt] = useState([])
   const [galleries, setGalleries] = useState([])
   const [currentForm, setCurrentForm] = useState('login')
   const [viewer, setViewer] = useState({})
   const [errors, setErrors] = useState(false)
-  const firstNameRef = useRef()
-  const lastNameRef = useRef()
-  const emailRef = useRef()
-  const passwordRef = useRef()
-  const zipCodeRef = useRef()
-  const navigate = useNavigate()
+  
+  
+  
+  
+  
+  const history = useHistory()
+  
 
 
   //handle login
-  const handleLogin = (e) => {
-    e.preventDefault()
-    fetch('/login', {
-        method: 'POST', 
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json'
-        }, 
-        body: JSON.stringify({
-          email: emailRef.current.value,
-          password: passwordRef.current.value
-        })
-      })
-      .then( res => res.json())
-      .then( viewer => { 
-        localStorage.vid = viewer.vid 
-        navigate(`/viewer_profile`)
-        console.log(viewer.vid)
-    })
-  }
+  // const handleLogin = (e) => {
+  //   e.preventDefault()
+  //   fetch('/login', {
+  //       method: 'POST', 
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         Accept: 'application/json'
+  //       }, 
+  //       body: JSON.stringify({
+  //         email: emailRef.current.value,
+  //         password: passwordRef.current.value,
+  //       })
+  //     })
+  //     .then( res => res.json())
+  //     .then( viewer => { 
+  //       localStorage.vid = viewer.vid 
+  //       console.log(viewer.vid)
+  //       history('/viewer_profile')
+  //   })
+  // }
   
   // handleRegister
-  const handleRegister = (e) =>{
-    e.preventDefault()
-    fetch( '/register', {
-        method: 'POST', 
-        headers: { 
-          'Content-Type': 'application/json', 
-          Accept: 'application/json'
-         }, 
-         body: JSON.stringify({
-            first_name: firstNameRef.current.value, 
-            last_name: lastNameRef.current.value, 
-            email: emailRef.current.value,
-            password: passwordRef.current.value, 
-            zip_code: zipCodeRef.current.value,
-         })
-        })
-         .then( r => r.json())
-         .then( viewer => {
-            localStorage.vid = viewer.vid 
-            setViewer(viewer)
-            navigate('/about')
-         })
-        }
+  // const handleRegister = (e) =>{
+  //   e.preventDefault()
+  //   fetch( '/register', {
+  //       method: 'POST', 
+  //       headers: { 
+  //         'Content-Type': 'application/json', 
+  //         Accept: 'application/json'
+  //        }, 
+  //        body: JSON.stringify({
+  //           first_name: firstNameRef.current.value, 
+  //           last_name: lastNameRef.current.value, 
+  //           email: emailRef.current.value,
+  //           password: passwordRef.current.value, 
+  //           zip_code: zipCodeRef.current.value,
+  //        })
+  //       })
+  //        .then( r => r.json())
+  //        .then( viewer => {
+  //           localStorage.vid = viewer.vid 
+  //           setViewer(viewer)
+  //        })
+  //       }
     
   //set current viewer
   function setCurrentViewer(currentViewer) {
@@ -107,6 +112,17 @@ function App() {
     }
 
   }, [])
+    //fetching gallery data
+    useEffect(()=>{
+      fetch('/galleries')
+      .then(res => {
+        if(res.ok){
+          res.json().then(setGalleries)
+        } else {
+          res.json().then(setErrors)
+        }
+      })
+    }, [])
 
 
   const handleDeleteGallery = () => {
@@ -123,6 +139,7 @@ function App() {
   }
 
   //create gallery
+  const addGallery = () => {}
   //update gallery
   const updateGallery = (updatedGallery) => setGalleries(current => {
     return current.map(gallery => {
@@ -133,40 +150,79 @@ function App() {
       }
     })
   })
-  useEffect(()=>{
-      fetch('/galleries')
-      .then(res => {
-        if(res.ok){
-          res.json().then(setGalleries)
-        } else {
-          res.json().then(setErrors)
-        }
-      })
-    }, [])
+
   
 
   const toggleForm = (formName) => { setCurrentForm(formName) }
-  
-  
-  
-  
-  
-  
   // if(errors) return <NotFound/>
   return (
-    <div className="App">
-      <Header />
-      <GalleriesList 
-        galleries={galleries}
-        onDeleteGallery={handleDeleteGallery}
-        onAddGallery={handleAddGallery}
-        onUpdateGallery={handleUpdateGallery}
-      />
+    <>  
+      <Switch>
 
-       
-      { currentForm === 'login' ? <Login onFormSwitch={toggleForm} handleLogin={handleLogin}/> : <Register onFormSwitch={toggleForm} handleRegister={handleRegister}/>}  
-    </div>
+        <Route path='/login'>
+          <Login onFormSwitch={toggleForm}/>
+        </Route>
+        <Route path='/register'>
+          <Register onFormSwitch={toggleForm}/>
+        </Route>
+        
+        <Route path='/viewers/:id'>
+          <ViewerProfile />
+        </Route>
+        
+
+        <Route path='/galleries'>
+          <GalleriesList/>
+        </Route>
+        
+        <Route path='/arts'>
+          <ArtList/>
+        </Route>
+
+        <Route path='arts/:id'>
+          <ArtCard/>
+        </Route>
+
+
+
+        <Route path='/galleries/new'>
+          <NewGalleryForm />
+        </Route>
+
+        <Route path='/gallery/:id/edit'>
+          <EditGalleryForm/>
+        </Route>
+
+
+        <Footer/>
+      </Switch>
+      { 
+        currentForm === 'login' ? 
+        <Login onFormSwitch={toggleForm}/> 
+        : 
+        <Register onFormSwitch={toggleForm} />
+      }  
+    </>
+    
   );
 }
 
 export default App;
+
+
+ {/* <GalleriesList 
+        galleries={galleries}
+        onDeleteGallery={handleDeleteGallery}
+        onAddGallery={addGallery}
+        // onUpdateGallery={handleUpdateGallery}
+      /> */}
+
+      // <NewGalleryForm />
+
+
+      // { 
+      //   currentForm === 'login' ? 
+      //   <Login onFormSwitch={toggleForm}/> 
+      //   : 
+      //   <Register onFormSwitch={toggleForm} />
+      //   }  

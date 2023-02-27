@@ -1,67 +1,78 @@
-import React, { useParams, useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import { useHistory} from 'react-router-dom'
 
 
-function Register(props){
-    const firstNameRef = useRef()
-    const lastNameRef = useRef()
-    const passwordRef = useRef()
-    const emailRef = useRef()
-    const zipCodeRef = useRef()
-    const [viewer, setViewer] = useState([])
-    const [error, setError] = useState([])
-    const navigate = useNavigate()
 
-    // const handleSubmit = (e) =>{
-    //     e.preventDefault()
-    //     fetch( '/register', {
-    //         method: 'POST', 
-    //         headers: { 
-    //           'Content-Type': 'application/json', 
-    //           Accept: 'application/json'
-    //          }, 
-    //          body: JSON.stringify({
-    //             first_name: firstNameRef.current.value, 
-    //             last_name: lastNameRef.current.value, 
-    //             email: emailRef.current.value,
-    //             password: passwordRef.current.value, 
-    //             zip_code: zipCodeRef.current.value,
-    //          })
-    //         })
-    //          .then( r => r.json())
-    //          .then( viewer => {
-    //             localStorage.vid = viewer.vid 
-    //             setViewer(viewer)
-    //             navigate('/about')
-    //          })
-    //         }
-        
 
-        
+function Register({onFormSwitch}){
+    const [formData, setFormData] = useState({
+        first_name: '',
+        last_name: '',
+        email:'',
+        password: '',
+        zip_code: ''
+    })
     
+    const [errors, setErrors] = useState([])
+    const history = useHistory()
+
+    const {first_name, last_name, email, password, zip_code} = formData
+    
+    const onSubmit = (e) => {
+        e.preventDefault()
+        const viewer = {
+            first_name,
+            last_name,
+            email, 
+            password,
+            zip_code
+        }
+
+        fetch('/viewers', {
+            method: 'POST', 
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(viewer)
+        })
+        .then(r => {
+            if(r.ok){
+                r.json().then(viewer => {
+                    history.push(`/viewer_profile/${viewer.id}`)
+                })
+            } else {
+                r.json().then(json => setErrors(Object.entries(json.errors)))
+            }
+        })
+    }
+
+    const handleChange = (e) => {
+        const {name, value} = e.target
+        setFormData({...formData, [name]: value})
+    }
+
     return(
         
         <div className='auth-form-container'>
-            <form className='reg-form' onSubmit={handleSubmit}>
+            <form className='reg-form' onSubmit={onSubmit}>
 
                 <label htmlFor='first-name'>first-name</label>
-                <input ref={firstNameRef} type='first-name' id='first-name' />
+                <input type='text' name='first_name' value={first_name} onChange={handleChange}/> 
 
                 <label htmlFor='last-name'>last-name</label>
-                <input ref={lastNameRef} type='last-name' id='last-name' />
+                <input type='text' name='last_name' value={last_name} onChange={handleChange}/>
 
                 <label htmlFor='email'>email</label>
-                <input ref={emailRef} type='email' id='email' />
+                <input type='text' name='email' value={email} onChange={handleChange}/>
                 
                 <label htmlFor='password'>password</label>
-                <input ref={passwordRef} type='password' id='password' />
+                <input type='password' name='password' value={password} onChange={handleChange}/>
 
                 <label htmlFor='zip-code'>zip-code</label>
-                <input ref={zipCodeRef} type='zip-code' id='zip-code' />
+                <input type='text' name='zip_code' value={zip_code} onChange={handleChange}/>
                 
                 <button type='submit'>Register</button>
             </form>
-            <button className='link-btn' onClick={()=>props.onFormSwitch('login')}>Already have an account? Login here</button>
+            {errors?errors.map(e => <div>{e[0]+': ' + e[1]}</div>):null}
+            <button className='link-btn' onClick={()=>onFormSwitch('login')}>Already have an account? Login here</button>
             
         </div>
     )
