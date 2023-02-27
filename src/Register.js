@@ -1,40 +1,24 @@
-import React, { useState, useRef } from 'react';
-// import { useNavigate } from 'react-router-dom'
-import { Redirect } from 'react-router-dom'
+import React, { useParams, useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom'
 
-
-
-const baseUrl = 'http://localhost:3000/'
-const registerUrl = baseUrl + 'register'
 
 function Register(props){
-    // const firstNameRef = useRef()
-    // const lastNameRef = useRef()
-    // const passwordRef = useRef()
-    // const emailRef = useRef()
-    // const zipCodeRef = useRef()
-    // const [viewer, setViewer] = useState([])
-    // const [errorMessage, setErrorMessage] = useState([])
-    // const navigate = useNavigate()
+    const firstNameRef = useRef()
+    const lastNameRef = useRef()
+    const passwordRef = useRef()
+    const emailRef = useRef()
+    const zipCodeRef = useRef()
+    const [viewer, setViewer] = useState([])
+    const [error, setError] = useState([])
+    const navigate = useNavigate()
 
-    // const formData = (e) => {
-    //     e.preventDefault();
-    //     e.target.reset();
-
-    //     let viewer = {
-    //         first_name,
-    //         last_name,
-    //         email,
-    //         password,
-    //         zip_code,
-    //     }
-
-
-    //     fetch( registerUrl, {
+    // const handleSubmit = (e) =>{
+    //     e.preventDefault()
+    //     fetch( '/register', {
     //         method: 'POST', 
     //         headers: { 
     //           'Content-Type': 'application/json', 
-    //           accept: 'application/json'
+    //           Accept: 'application/json'
     //          }, 
     //          body: JSON.stringify({
     //             first_name: firstNameRef.current.value, 
@@ -48,16 +32,17 @@ function Register(props){
     //          .then( viewer => {
     //             localStorage.vid = viewer.vid 
     //             setViewer(viewer)
-    //             navigate('/viewer_profile')
+    //             navigate('/about')
     //          })
-    //     }
+    //         }
+        
 
         
     
     return(
         
         <div className='auth-form-container'>
-            {/* <form className='reg-form' onSubmit={handleSubmit}>
+            <form className='reg-form' onSubmit={handleSubmit}>
 
                 <label htmlFor='first-name'>first-name</label>
                 <input ref={firstNameRef} type='first-name' id='first-name' />
@@ -75,7 +60,7 @@ function Register(props){
                 <input ref={zipCodeRef} type='zip-code' id='zip-code' />
                 
                 <button type='submit'>Register</button>
-            </form> */}
+            </form>
             <button className='link-btn' onClick={()=>props.onFormSwitch('login')}>Already have an account? Login here</button>
             
         </div>
