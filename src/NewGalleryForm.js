@@ -46,6 +46,7 @@ function NewGalleryForm({addGallery}){
               className="input-text"
             />
             <br />
+            
             <input
               type="text"
               name="description"

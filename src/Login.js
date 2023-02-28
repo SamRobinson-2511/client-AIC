@@ -30,7 +30,7 @@ function Login({onFormSwitch}){
               res.json().then(viewer => {
                   history.push(`/viewers/${viewer.id}`)
               })
-          }else {
+          } else {
               res.json().then(json => setErrors(json.errors))
           }
       })
