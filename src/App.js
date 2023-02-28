@@ -83,12 +83,7 @@ function App() {
   
   
   //fetch artwork from AIC 
-  const fetchArts = () => {
-    fetch('/arts')
-    .then(r=>r.json())
-    .then(art => setArt(art.data))
-    console.log(art)
-  }
+  
 
   //create gallery
   const addGallery = () => {}
@@ -121,15 +116,13 @@ function App() {
         <Route path="/viewers/:id">
           <ViewerProfile/>
         </Route>
+
+        <Route path="/about">
+          <About/>
+        </Route>
       </Switch>
 
       </div>
-          
-        
-
-        
-        
-       
   );
 }
 
