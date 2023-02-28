@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import ArtCard from './ArtCard'
 
 function ArtList(){
-  const [arts, setArts] = useState([])
+  const [art, setArt] = useState([])
   const [errors, setErrors] = useState(false)
 
   // const artworks = { id, visits_id, gallery_id, artist_display, image_id, title, is_on_view } 
@@ -19,6 +19,14 @@ function ArtList(){
   //     .then(console.log)
   //   })
   // }
+
+  const fetchArt = () => {
+    fetch(`/arts`)
+    .then(r=>r.json())
+    .then(art => setArt(art))
+  }
+
+  console.log(art[0])
 
   
 
@@ -40,7 +48,10 @@ function ArtList(){
     }
 
       return(
+        <>
+        <button onClick={fetchArt}>Fetch Art</button>
         <h1>ArtList</h1>
+        </>
       )
 }
 

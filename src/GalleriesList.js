@@ -8,6 +8,7 @@ function GalleriesList({addGallery}){
 
     return(
         <div className='GalleryList'>
+            <h1>Galleries List</h1>
             {/* <NewGalleryForm onAddGallery={addGallery}/> */}
             <ul className='Galleries'>
                 {/* <Gallery
