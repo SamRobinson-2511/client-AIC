@@ -9,29 +9,29 @@ import NavBar from './NavBar'
 function ViewerProfile(){
     const [gallery, setGallery] = useState([])
     const [errors, setErrors] = useState([])
-
-    useEffect(()=> {
-        fetch(`/galleries`)
-        .then(res => {
-            if(res.ok){
-                res.json().then(setGallery)
-            } else {
-                res.json().then(setErrors)
-            }
-        })
-    }, [])
-    if(errors) return <h2>{errors.error}</h2>
-    
-    
     return(
-        <>
-            <h2>Gello</h2>
-        </>
-
+        <div className="user-profile">
+            <div className='nav-bar'>
+                <h2>hi</h2>
+            </div>
+        </div>
     )
 }
 
 export default ViewerProfile;
+
+
+// useEffect(()=> {
+//     fetch(`/galleries`)
+//     .then(res => {
+//         if(res.ok){
+//             res.json().then(setGallery)
+//         } else {
+//             res.json().then(setErrors)
+//         }
+//     })
+// }, [])
+// if(errors) return <h2>{errors.error}</h2>
 
 
 

@@ -130,7 +130,14 @@ footer {
 }
 
 .gallery-form {
-  
+  background: black;
+}
 
+.user-profile {
+  flex-direction: column;
+}
 
+.home{
+  background: maroon;
+  text-align: center;
 }

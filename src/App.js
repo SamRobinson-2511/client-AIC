@@ -1,10 +1,10 @@
 
-import {Switch, Route, useHistory} from 'react-router-dom'
-
-import React, { useState, useEffect } from 'react'
+import {BrowserRouter as Router, Switch, Route, useHistory} from 'react-router-dom'
+import React, { useState, useEffect, useContext } from 'react'
+import { ViewerContext } from './ViewerContext';
 import './App.css';
-
 import Home from './Home'
+import NavBar from './NavBar'
 import ArtCard from './ArtCard'
 import About from './About'
 import Header from './Header'
@@ -29,59 +29,11 @@ function App() {
   const [errors, setErrors] = useState(false)
   
   
-  
-  
-  
   const history = useHistory()
   
 
 
-  //handle login
-  // const handleLogin = (e) => {
-  //   e.preventDefault()
-  //   fetch('/login', {
-  //       method: 'POST', 
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         Accept: 'application/json'
-  //       }, 
-  //       body: JSON.stringify({
-  //         email: emailRef.current.value,
-  //         password: passwordRef.current.value,
-  //       })
-  //     })
-  //     .then( res => res.json())
-  //     .then( viewer => { 
-  //       localStorage.vid = viewer.vid 
-  //       console.log(viewer.vid)
-  //       history('/viewer_profile')
-  //   })
-  // }
   
-  // handleRegister
-  // const handleRegister = (e) =>{
-  //   e.preventDefault()
-  //   fetch( '/register', {
-  //       method: 'POST', 
-  //       headers: { 
-  //         'Content-Type': 'application/json', 
-  //         Accept: 'application/json'
-  //        }, 
-  //        body: JSON.stringify({
-  //           first_name: firstNameRef.current.value, 
-  //           last_name: lastNameRef.current.value, 
-  //           email: emailRef.current.value,
-  //           password: passwordRef.current.value, 
-  //           zip_code: zipCodeRef.current.value,
-  //        })
-  //       })
-  //        .then( r => r.json())
-  //        .then( viewer => {
-  //           localStorage.vid = viewer.vid 
-  //           setViewer(viewer)
-  //        })
-  //       }
-    
   //set current viewer
   function setCurrentViewer(currentViewer) {
     setViewer(currentViewer);
@@ -156,54 +108,28 @@ function App() {
   const toggleForm = (formName) => { setCurrentForm(formName) }
   // if(errors) return <NotFound/>
   return (
-    <>  
+    <div className='app-container'>  
       <Switch>
-
-        <Route path='/login'>
-          <Login onFormSwitch={toggleForm}/>
+        <Route exact path='/'>
+          <Home/>
+          { currentForm === 'login' ? 
+            <Login onFormSwitch={toggleForm}/> 
+            : 
+            <Register onFormSwitch={toggleForm} />
+          }  
         </Route>
-        <Route path='/register'>
-          <Register onFormSwitch={toggleForm}/>
+        <Route path="/viewers/:id">
+          <ViewerProfile/>
         </Route>
-        
-        <Route path='/viewers/:id'>
-          <ViewerProfile />
-        </Route>
-        
-
-        <Route path='/galleries'>
-          <GalleriesList/>
-        </Route>
-        
-        <Route path='/arts'>
-          <ArtList/>
-        </Route>
-
-        <Route path='arts/:id'>
-          <ArtCard/>
-        </Route>
-
-
-
-        <Route path='/galleries/new'>
-          <NewGalleryForm />
-        </Route>
-
-        <Route path='/gallery/:id/edit'>
-          <EditGalleryForm/>
-        </Route>
-
-
-        <Footer/>
       </Switch>
-      { 
-        currentForm === 'login' ? 
-        <Login onFormSwitch={toggleForm}/> 
-        : 
-        <Register onFormSwitch={toggleForm} />
-      }  
-    </>
-    
+
+      </div>
+          
+        
+
+        
+        
+       
   );
 }
 
@@ -226,3 +152,57 @@ export default App;
       //   : 
       //   <Register onFormSwitch={toggleForm} />
       //   }  
+
+      {/* { 
+        currentForm === 'login' ? 
+        <Login onFormSwitch={toggleForm}/> 
+        : 
+        <Register onFormSwitch={toggleForm} />
+      }   */}
+
+      //handle login
+  // const handleLogin = (e) => {
+  //   e.preventDefault()
+  //   fetch('/login', {
+  //       method: 'POST', 
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         Accept: 'application/json'
+  //       }, 
+  //       body: JSON.stringify({
+  //         email: emailRef.current.value,
+  //         password: passwordRef.current.value,
+  //       })
+  //     })
+  //     .then( res => res.json())
+  //     .then( viewer => { 
+  //       localStorage.vid = viewer.vid 
+  //       console.log(viewer.vid)
+  //       history('/viewer_profile')
+  //   })
+  // }
+  
+  // handleRegister
+  // const handleRegister = (e) =>{
+  //   e.preventDefault()
+  //   fetch( '/register', {
+  //       method: 'POST', 
+  //       headers: { 
+  //         'Content-Type': 'application/json', 
+  //         Accept: 'application/json'
+  //        }, 
+  //        body: JSON.stringify({
+  //           first_name: firstNameRef.current.value, 
+  //           last_name: lastNameRef.current.value, 
+  //           email: emailRef.current.value,
+  //           password: passwordRef.current.value, 
+  //           zip_code: zipCodeRef.current.value,
+  //        })
+  //       })
+  //        .then( r => r.json())
+  //        .then( viewer => {
+  //           localStorage.vid = viewer.vid 
+  //           setViewer(viewer)
+  //        })
+  //       }
+    

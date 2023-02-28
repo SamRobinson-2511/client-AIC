@@ -36,7 +36,7 @@ function Register({onFormSwitch}){
         .then(r => {
             if(r.ok){
                 r.json().then(viewer => {
-                    history.push(`/viewer_profile/${viewer.id}`)
+                    history.push(`/viewers/${viewer.id}`)
                 })
             } else {
                 r.json().then(json => setErrors(Object.entries(json.errors)))
@@ -50,7 +50,6 @@ function Register({onFormSwitch}){
     }
 
     return(
-        
         <div className='auth-form-container'>
             <form className='reg-form' onSubmit={onSubmit}>
 
