@@ -16,7 +16,7 @@
   padding: 1rem;
 }
 
-.auth-form-container, .login-form, .reg-form, .collection-search, .gallery-form {
+.auth-form-container, .login-form, .reg-form, .collection-search, .gallery-form, .edit-form-container {
   display: flex;
   flex-direction: column;
 }
@@ -30,11 +30,12 @@
   }
 }
 
-.auth-form-container {
+.auth-form-container, .edit-form-container {
   padding: 5rem;
   border: 1px solid white;
   border-radius: 10px;
 }
+
 
 label{
   text-align: left;
@@ -44,7 +45,7 @@ label{
 input{
   margin: 0.5rem 0;
   padding: 1rem;
-  border-radius: 10px;
+  border-radius: 7px;
 }
 
 button {
@@ -114,9 +115,6 @@ li {
   width: 300px;
 }
 
-.sub-nav{
-  margin: auto;
-}
 
 nav .nav-link {
   display: block;
@@ -140,4 +138,12 @@ footer {
 .home{
   background: maroon;
   text-align: center;
+}
+
+.art-card {
+  
+}
+
+.description-input{
+  background-color: maroon;
 }

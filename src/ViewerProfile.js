@@ -7,6 +7,7 @@ import NewGalleryForm from './NewGalleryForm'
 import About from './About'
 import NavBar from './NavBar'
 import Footer from './Footer'
+import SearchBar from './SearchBar'
 
 function ViewerProfile(){
     const [gallery, setGallery] = useState([])
@@ -16,12 +17,11 @@ function ViewerProfile(){
         <div className="user-profile">
             <div className='nav-bar'>
                 <NavBar/>
-                
-                <h2>hi</h2>
+                <div className='search-bar'>
+                <SearchBar/>
+                </div>
             </div>
-            <Footer/>
         </div>
-    
     )
 }
 

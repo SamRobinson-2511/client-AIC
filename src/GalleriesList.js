@@ -1,4 +1,7 @@
 import { useEffect, useState } from 'react'
+import GalleryCard from './GalleryCard'
+import NewGalleryForm from './NewGalleryForm'
+import NavBar from './NavBar'
 
 
 function GalleriesList({addGallery}){
@@ -6,10 +9,27 @@ function GalleriesList({addGallery}){
     const [galleries, setGalleries] = useState([])
     const [errors, setErrors] = useState([])
 
+    useEffect(()=>{
+        fetch(`/galleries`)
+        .then(r=>r.json())
+        .then(galleries => setGalleries(galleries))
+    },[])
+    console.log(galleries)
+    
+    const galleriesArray = (g) =>{
+        g.map(
+        
+        )
+    }
+    
+    
+
+    
+
     return(
         <div className='GalleryList'>
             <h1>Galleries List</h1>
-            {/* <NewGalleryForm onAddGallery={addGallery}/> */}
+            {/* <NewGalleryForm onAddGallery={addGallery}/> */}x
             <ul className='Galleries'>
                 {/* <Gallery
                     key={gallery.id}

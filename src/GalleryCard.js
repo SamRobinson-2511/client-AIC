@@ -1,20 +1,25 @@
 
+function GalleryCard({gallery, handleDeleteGallery}) {
 
-function GalleryCard({gallery, onDeleteGallery, onUpdateGallery}) {
-    const {title, description, art_id} = gallery
+
+    //add gallery
+
 
     //delete gallery
-    function handleDelete(){
-        fetch(`/galleries/${gallery.id}`, {
-            method: 'DELETE'
-        })
-        .then(r => r.json())
-        .then(()=> onDeleteGallery(gallery))
-    }
+    // function handleDelete(){
+    //     fetch(`/galleries/${gallery.id}`, {
+    //         method: 'DELETE'
+    //     })
+    //     .then(r => r.json())
+    //     .then(()=> onDeleteGallery(gallery))
+    // }
+
+
+
 
     return(
-        <div className="gallery-card">
-            <button onClick={handleDelete}>Delete Gallery</button>
+        <div>
+            <button onClick={handleDeleteGallery}>Delete Gallery</button>
         </div>
     )
 }

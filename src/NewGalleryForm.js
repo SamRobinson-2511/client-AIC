@@ -18,7 +18,7 @@ function NewGalleryForm({addGallery}){
       function handleSubmit(event) {
         event.preventDefault();
     
-        fetch("/galleries", {
+        fetch("/galleries/new", {
           method: "POST",
           headers: {"Content-Type": "application/json"},
           body: JSON.stringify({...formData}),
@@ -46,14 +46,13 @@ function NewGalleryForm({addGallery}){
               className="input-text"
             />
             <br />
-            
-            <input
+            <input 
               type="text"
               name="description"
               onChange={handleChange}
               value={formData.description}
               placeholder="Describe the new gallery"
-              className="input-text"
+              className="description-input"
             />
 
             <br />

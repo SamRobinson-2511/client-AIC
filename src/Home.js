@@ -1,3 +1,7 @@
+import SearchBar from "./SearchBar";
+import NavBar from "./NavBar";
+
+
 function Home(){
     return(
         <div className='home'>
