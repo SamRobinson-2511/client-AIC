@@ -1,4 +1,7 @@
 import { useEffect, useState } from 'react'
+import VisitCard from './VisitCard'
+import NewVisitForm from './NewVisitForm'
+import SearchBar from './SearchBar'
 
 
 function VisitsList({visitsUrl}){
@@ -8,12 +11,23 @@ function VisitsList({visitsUrl}){
         fetch(visitsUrl)
         .then(r=>r.json())
         .then(visits => setVisits(visits))
-    },[])
-    console.log(visits)
-
+    }, [])
+    
+    const visitCards = visits.map(visit => {
+        return <VisitCard
+            key={visit.id}
+            id={visit.id}
+            comment={visit.comment}
+            date={visit.date}
+        />
+    })
 
     return(
-        <h1> visits list </h1>
+        <div className="visit-div">
+            <SearchBar/>
+            <h1> Visits List  </h1>
+                <ul className="visit-cards">{visitCards}</ul>
+        </div>
     )
 }
 

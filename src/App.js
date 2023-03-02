@@ -8,7 +8,6 @@ import NavBar from './NavBar'
 import SearchBar from './SearchBar'
 import ArtCard from './ArtCard'
 import About from './About'
-import Header from './Header'
 import Footer from './Footer'
 import Login  from './Login'
 import Logout from './Logout'
@@ -23,26 +22,34 @@ import GalleryDetail from './GalleryDetail'
 import ArtList from './ArtList'
 import GalleryCard from './GalleryCard'
 import NotFound from './NotFound'
+import NewVisitForm from './NewVisitForm';
 
 function App() {
-  const [isDarkMode, setIsDarkMode] = useState(true)
+  const {viewer, setViewer} = useContext(ViewerContext)
+  // dark mode 
+  
   const [loggedIn, setLoggedIn] = useState(false)
-  const [art, setArt] = useState([])
-  const [galleries, setGalleries] = useState([])
   const [currentForm, setCurrentForm] = useState('login')
-  const [currentViewer, setViewer] = useState({})
+  const [currentViewer, setCurrentViewer] = useState({})
   const [errors, setErrors] = useState(false)
-  
-  
-  
   
   const history = useHistory()
 
+  //on form switch
+  const toggleForm = (formName) => { setCurrentForm(formName) }
+
+
+  //routes and endpoints
   const galleriesUrl = '/galleries'
   const galleryUrl = '/galleries/:id'
+  const newGalleryUrl = '/galleries/new'
   const artUrl = '/arts'
   const visitsUrl = '/visits'
+  const newVisitsUrl = '/visits/new'
+  const logoutUrl = '/logout'
+  const viewerUrl = '/viewer'
 
+  //request headers
   const deleteReq = {method: 'DELETE', headers: {
     'Content-Type':'application/json'}
   }
@@ -56,140 +63,124 @@ function App() {
   {'Content-Type':'application/json'}
   }
 
-
-  //set current viewer
-  function setCurrentViewer(currentViewer) {
-    setViewer(currentViewer);
-    setLoggedIn(true);
-  }
+  // // set current viewer
+  // function setViewer(viewer) {
+  //   setViewer(currentViewer);
+  //   setLoggedIn(true);
+  // }
 
   //logout
-  function handleLogout(){
-    setViewer({})
-    setLoggedIn(false)
-    localStorage.token = ""
-  }
+
+  // const handleLogout = (e) => {
+  //   fetch(logoutUrl, deleteReq)
+  //   setViewer({})
+  //   setLoggedIn(false)
+  //   console.log(viewer)
+
+  // }
+  // function handleLogout(){
+  //   setViewer({})
+  //   setLoggedIn(false)
+  //   // localStorage.token = ""
+  // }
 
   //auto login
-  useEffect(()=> {
-    const token = localStorage.getItem('token')
-    if(token){
-      fetch('auto_login', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      .then(res=>res.json())
-      .then(data =>{
-        setViewer(data)
-        console.log(data)
-      })
-    }
-  }, [])
+  // useEffect(()=> {
+  //   const token = localStorage.getItem('token')
+  //   if(token){
+  //     fetch('auto_login', {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`
+  //       }
+  //     })
+  //     .then(res=>res.json())
+  //     .then(data =>{
+  //       setViewer(data)
+  //       console.log(data)
+  //     })
+  //   }
+  // }, [])
 
   //update profile
+  // useEffect(()=>{
+  //   fetch(`/viewer`)
+  //   .then(r=>r.json())
+  //   .then(console.log)
+  // },[])
+
   const handleUpdateProfile = (e) => {
     e.preventDefault()
     console.log(e)
   }
 
-  
-
-  
-
-
-
-
-
-    //fetching gallery data
-  // useEffect(()=>{
-  //   fetch('/galleries')
-  //   .then(res => {
-  //     if(res.ok){
-  //       res.json().then(setGalleries)
-  //     } else {
-  //       res.json().then(setErrors)
-  //     }
-  //   })
-  // }, [])
-  //create gallery 
+  //gallery actions 
   const handleCreateGallery = (e) => {
     e.preventDefault()
+    fetch(`galleries/new`, postReq)
+    .then(r=>r.json())
+    .then(console.log)
   }
-  //update gallery
+  //update 
   const handleUpdateGallery = (e) => {
     e.preventDefault()
+    fetch(`galleries/:id`, patchReq)
+    .then(r=>r.json())
+    .then(console.log)
   }
   //delete gallery 
   const handleDeleteGallery = () => {
     fetch(`galleries/:id`, deleteReq)
-    console.log()
+    console.log('gallery deleted')
   }
-
-
-
-  //fetch artwork from AIC - maybe carousel of images on homepage
-  // useEffect(()=>{
-  //   fetch(`/arts`)
-  //   .then(r=>r.json())
-  //   .then(art => setArt(art))
-  // }, [])
-  // console.log(art)
-  // const artworks = () => {
-  //   art.map((a)=>{
-  //     key: art.id, 
-  //     id: art.id, 
-  //     title: art.title, 
-  //     artist_display: art.artist_display,
-  //   })
-  // }
-
-  //create gallery
-
-  const createGallery = (e) => {
-    e.preventDefault()
-  }
-
-  //update gallery
-  const updateGallery = (updatedGallery) => setGalleries(current => {
-    return current.map(gallery => {
-      if(gallery.id === updatedGallery.id){
-        return updatedGallery
-      } else {
-        return gallery
-      }
-    })
-  })
-
   
 
-  const toggleForm = (formName) => { setCurrentForm(formName) }
+  //update gallery
+  // const updateGallery = (updatedGallery) => setGalleries(current => {
+  //   return current.map(gallery => {
+  //     if(gallery.id === updatedGallery.id){
+  //       return updatedGallery
+  //     } else {
+  //       return gallery
+  //     }
+  //   })
+  // })
+
+  
   if(errors) return <NotFound/>
   return (
     <div className='app-container'>  
       <Switch>
+
         <Route exact path='/'>
-          <ViewerProfile/>
-          <EditProfile/>
+        // { currentForm === 'login' ? <Login onFormSwitch={toggleForm}/> : <Register onFormSwitch={toggleForm} />}
         </Route>
 
         <Route path='/viewers/:id/update'>
-          <EditProfile/>
+          <EditProfile />
         </Route>
 
+        <Route path='/logout'>
+          <Logout />
+        </Route> 
+
         <Route  path="/galleries/:id">
-          <GalleryCard handleDeleteGallery/>
+          <GalleryCard handleDeleteGallery={handleDeleteGallery}/>
         </Route>
 
         <Route path="/galleries">
           <GalleriesList 
+            galleriesUrl = {galleriesUrl}
             handleDeleteGallery = {handleDeleteGallery}
             handleUpdateGallery = {handleUpdateGallery}
+            handleCreateGallery = {handleCreateGallery}
             patchReq={patchReq}
-            deleteReq = {deleteReq}
+            deleteReq={deleteReq}
+            postReq={postReq}
+            newGalleryUrl={newGalleryUrl}p
           />
           <NewGalleryForm/>
           <GalleryCard
+            galleryUrl={galleryUrl}
             patchReq={patchReq}
             deleteReq={deleteReq}
           />
@@ -200,20 +191,27 @@ function App() {
           <ArtList artUrl = {artUrl}/>
           <SearchBar artUrl = {artUrl}/>
         </Route>
+
         <Route path='/visits'>
           <VisitsList visitsUrl={visitsUrl}/>
+          <NewVisitForm 
+            newVisitsUrl={newVisitsUrl}
+            postReq={postReq}
+          />
         </Route>
 
         <Route path="/about">
           <About/>
           <Footer/>
         </Route>
-        <Route>
+
+        <Route path='*'>
           <NotFound/>
         </Route>
+
       </Switch>
-      </div>
-  );
+    </div>
+  ); 
 }
 
 export default App;
@@ -290,8 +288,4 @@ export default App;
   //       }
     
 
-  // { currentForm === 'login' ? 
-  //         <Login onFormSwitch={toggleForm}/> 
-  //         : 
-  //         <Register onFormSwitch={toggleForm} />
-  //     }  
+  // { currentForm === 'login' ? <Login onFormSwitch={toggleForm}/> : <Register onFormSwitch={toggleForm} />}

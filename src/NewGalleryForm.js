@@ -1,22 +1,16 @@
 import { useState } from 'react'
 
-
 function NewGalleryForm({addGallery}){
-    const [formData, setFormData] = useState({
-        title: "", 
-        description: "",
-    })
+    const [formData, setFormData] = useState({title: "", description: ""})
     const [errors, setErrors] = useState([])
     
-    
-
     const handleChange = (e) => {
       const {name, value} = e.target
       setFormData({...formData, [name]:value})
     }
 
-      function handleSubmit(event) {
-        event.preventDefault();
+      function handleSubmit(e) {
+        e.preventDefault(e);
     
         fetch("/galleries/new", {
           method: "POST",

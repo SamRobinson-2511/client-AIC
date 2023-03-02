@@ -1,7 +1,9 @@
-function Logout(){
+function Logout({handleLogout}){
 
     return(
-        <h2>Logout</h2>
+        <div>
+            <button onClick={handleLogout}>Logout</button>
+        </div>
     )
 }
 

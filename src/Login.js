@@ -1,12 +1,13 @@
-import {useState } from 'react'
+import {useState, useContext } from 'react'
 import {useHistory} from 'react-router-dom'
+import { ViewerContext} from './ViewerContext'
+
 
 
 function Login({onFormSwitch}){
-    const [formData, setFormData] = useState({
-      email: '', 
-      password: ''
-    })
+  
+    const {viewer, setViewer} = useContext(ViewerContext)
+    const [formData, setFormData] = useState({email: '', password: ''})
     const [errors, setErrors] =  useState([])
     const history = useHistory()
 
@@ -14,27 +15,24 @@ function Login({onFormSwitch}){
     
     const onSubmit = (e) => {
       e.preventDefault()
-      const viewer = {
-        email, 
-        password
-      }
+      const viewerLogin = { email: formData.email, password: formData.password }
     
 
       fetch(`/login`,{
         method:'POST',
         headers:{'Content-Type': 'application/json'},
-        body:JSON.stringify(viewer)
+        body:JSON.stringify(viewerLogin)
       })
       .then(res => {
           if(res.ok){
-              res.json().then(viewer => {
-                  history.push(`/viewers/${viewer.id}`)
+              res.json().then(viewerInfo => {
+                setViewer(viewerInfo)
+                history.push(`/viewer_profile`)
               })
           } else {
               res.json().then(json => setErrors(json.errors))
           }
       })
-     
   }
     
   const handleChange = (e) => {

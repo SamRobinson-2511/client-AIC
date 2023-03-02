@@ -1,5 +1,22 @@
 
-function GalleryCard({gallery, handleDeleteGallery}) {
+function GalleryCard({id, title, description, art_id, handleDeleteGallery, handleViewGallery}) {
+    
+    
+    return(
+        <div className="gallery-card">
+            <p>{title}</p>
+            <p>{description}</p>
+            <button onClick={handleViewGallery}>Open Gallery</button>
+            <button onClick={handleDeleteGallery}>Delete Gallery</button>
+        </div>
+    )
+}
+
+
+export default GalleryCard;
+
+
+
 
 
     //add gallery
@@ -17,11 +34,3 @@ function GalleryCard({gallery, handleDeleteGallery}) {
 
 
 
-    return(
-        <div>
-            <button onClick={handleDeleteGallery}>Delete Gallery</button>
-        </div>
-    )
-}
-
-export default GalleryCard;

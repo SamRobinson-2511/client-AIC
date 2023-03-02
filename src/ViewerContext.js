@@ -1,6 +1,6 @@
-import React, { useState } from "react"
+import React, { useState, createContext } from "react"
 
-const ViewerContext = React.createContext();
+const ViewerContext = createContext();
 
 function ViewerProvider({ children }) {
     const [viewer, setViewer] = useState(null);

@@ -2,46 +2,42 @@ import { useState, useEffect } from 'react'
 import ArtCard from './ArtCard'
 
 function ArtList(){
-  const [art, setArtArray] = useState([])
+  const [arts, setArtArray] = useState([])
+  const [filteredArt, setFilteredArt] = useState([])
+  const [isLoading, setIsLoading]= useState(true)
   const [errors, setErrors] = useState(false)
   
   useEffect(()=>{
+    setIsLoading(true)
     fetch(`/arts`)
     .then(r=>r.json())
-    .then(art=> setArtArray(art))
+    .then(arts=> {
+      setArtArray(arts)
+      setFilteredArt(filteredArt)
+      setIsLoading(false)
+      fetch(`arts/images`)
+      .then(r=>r.json())
+      .then(images => console.log(images))
+    })
   },[])
-  console.log(art)
 
   
 
-    
-    
-  
+  const artCard = arts.map(art => {
+    return <ArtCard
+      key={art.id}
+      id={art.id}
+      title={art.title}
+      artist_display={art.artist_display}
+      image_id={art.image_id}
 
-  
-
-  
-
-  
-
-  
-    //search arts from rails endpoint 
-  // const handleSearch = () => {
-  //     fetch('/search_arts', {
-  //       method: 'POST', 
-  //       headers: {
-  //         'content-type': 'application/json', 
-  //         accept: 'application/json'
-  //       },
-  //       body: JSON.stringify({ search: ""})
-  //     })
-  //     .then(r => r.json())
-  //     .then(console.log)
-  //   }
+    />
+  })
 
       return(
         <>
-          <ArtCard />
+          <h1>Arts</h1>
+          {artCard} 
         </>
       )
 }
