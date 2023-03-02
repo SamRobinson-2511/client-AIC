@@ -16,8 +16,6 @@ function Login({onFormSwitch}){
     const onSubmit = (e) => {
       e.preventDefault()
       const viewerLogin = { email: formData.email, password: formData.password }
-    
-
       fetch(`/login`,{
         method:'POST',
         headers:{'Content-Type': 'application/json'},
@@ -27,7 +25,8 @@ function Login({onFormSwitch}){
           if(res.ok){
               res.json().then(viewerInfo => {
                 setViewer(viewerInfo)
-                history.push(`/viewer_profile`)
+                console.log(viewerInfo)
+                history.push(`/viewer_profile${viewer.id}`)
               })
           } else {
               res.json().then(json => setErrors(json.errors))
@@ -52,7 +51,7 @@ function Login({onFormSwitch}){
                 <input type='password' name='password' value={password} onChange={handleChange} />
                 <br/>
                 
-                <button type='submit'>Login</button>
+                <button type='submit' onClick={onSubmit}>Login</button>
                 <br/>
             </form>
             <br/>

@@ -91,12 +91,25 @@ li {
 
 .nav-bar {
   overflow: hidden;
-  background-color: #333;
+  background-color: #fff;
   position: fixed; /* Set the navbar to fixed position */
   top: 0; /* Position the navbar at the top of the page */
   width: 100%; /* Full width */
+  height: 200px
+}
+nav .nav-link {
+  display: block;
+  float: left;
+  background-color: maroon;
+  border: 4px solid;
 }
 
+/* gallery cards */
+
+.small-btn {
+  border: black;
+  border-radius: 100px;
+}
 
 .title{
   display: flex;
@@ -108,43 +121,35 @@ li {
   margin: 1rem;
   box-shadow: 0 0 7px 0 #ddd;
   border-radius: 5px;
-  border: 1px solid #ccc;
+  /* border: 1px solid #ccc; */
   width: 300px;
 }
 
-.visit-div{
+/* .visit-div{
   flex-direction: column;
-}
+} */
 
 
-nav .nav-link {
-  display: block;
-  float: left;
-  background-color: maroon;
-  border: 4px solid;
-}
+
 
 footer {
   color: white;
 }
 
 .gallery-form {
-  background: black;
+  background: #fff;
 }
 
 
-.user-profile {
+/* .user-profile {
   flex-direction: column;
-}
+} */
 
 .home{
   background: maroon;
   text-align: center;
 }
 
-.art-card {
-  
-}
 
 .description-input{
   background-color: maroon;
