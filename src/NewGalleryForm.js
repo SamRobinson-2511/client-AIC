@@ -15,7 +15,7 @@ function NewGalleryForm({addGallery}){
         fetch("/galleries/new", {
           method: "POST",
           headers: {"Content-Type": "application/json"},
-          body: JSON.stringify({...formData}),
+          body: JSON.stringify({...formData})
         })
         .then(r => {
           if(r.ok){

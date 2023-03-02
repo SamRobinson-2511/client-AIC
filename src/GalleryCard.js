@@ -6,8 +6,9 @@ function GalleryCard({id, title, description, art_id, handleDeleteGallery, handl
         <div className="gallery-card">
             <p>{title}</p>
             <p>{description}</p>
-            <button onClick={handleViewGallery}>Open Gallery</button>
-            <button onClick={handleDeleteGallery}>Delete Gallery</button>
+            
+                <button className="small-btn" onClick={handleViewGallery}>Open Gallery</button>
+                <button className="small-btn" onClick={handleDeleteGallery}>Delete Gallery</button>
         </div>
     )
 }

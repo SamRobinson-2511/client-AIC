@@ -3,6 +3,7 @@ import {BrowserRouter as Router, Switch, Route, useHistory} from 'react-router-d
 import React, { useState, useEffect, useContext } from 'react'
 import { ViewerContext } from './ViewerContext';
 import './App.css';
+import Modal from './Modal'
 import Home from './Home'
 import NavBar from './NavBar'
 import SearchBar from './SearchBar'
@@ -20,6 +21,7 @@ import VisitsList from './VisitsList';
 import EditGalleryForm from './EditGalleryForm'
 import GalleryDetail from './GalleryDetail'
 import ArtList from './ArtList'
+import Exhibitions from './Exhibitions';
 import GalleryCard from './GalleryCard'
 import NotFound from './NotFound'
 import NewVisitForm from './NewVisitForm';
@@ -132,6 +134,7 @@ function App() {
     fetch(`galleries/:id`, deleteReq)
     console.log('gallery deleted')
   }
+
   
 
   //update gallery
@@ -149,10 +152,12 @@ function App() {
   if(errors) return <NotFound/>
   return (
     <div className='app-container'>  
+    {/* <NavBar/> */}
+    {/* <SearchBar/> */}
       <Switch>
 
         <Route exact path='/'>
-        // { currentForm === 'login' ? <Login onFormSwitch={toggleForm}/> : <Register onFormSwitch={toggleForm} />}
+        { currentForm === 'login' ? <Login onFormSwitch={toggleForm}/> : <Register onFormSwitch={toggleForm} />}
         </Route>
 
         <Route path='/viewers/:id/update'>
@@ -178,7 +183,7 @@ function App() {
             postReq={postReq}
             newGalleryUrl={newGalleryUrl}p
           />
-          <NewGalleryForm/>
+          {/* <NewGalleryForm/> */}
           <GalleryCard
             galleryUrl={galleryUrl}
             patchReq={patchReq}
@@ -192,12 +197,20 @@ function App() {
           <SearchBar artUrl = {artUrl}/>
         </Route>
 
+        <Route path="/arts/:id">
+          <ArtCard/>
+        </Route>
+
         <Route path='/visits'>
           <VisitsList visitsUrl={visitsUrl}/>
           <NewVisitForm 
             newVisitsUrl={newVisitsUrl}
             postReq={postReq}
           />
+        </Route>
+
+        <Route path='arts/exhibitions'>
+          <Exhibitions/>
         </Route>
 
         <Route path="/about">

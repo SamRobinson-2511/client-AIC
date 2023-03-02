@@ -10,7 +10,6 @@ function Register({onFormSwitch}){
         zip_code: ''
     })
     const [viewer, setViewer] = useState([])
-
     const [errors, setErrors] = useState([])
     const history = useHistory()
 
@@ -34,11 +33,10 @@ function Register({onFormSwitch}){
         .then(r => {
             if(r.ok){
                 r.json().then(viewer => {
-                    setViewer(viewer)
+                    console.log(viewer)
+                    console.log(viewer)
                     history.push(`/viewers/${viewer.id}`)
                 })
-            } else {
-                r.json().then(json => setErrors(Object.entries(json.errors)))
             }
         })
     }
@@ -67,7 +65,7 @@ function Register({onFormSwitch}){
                 <label htmlFor='zip-code'>zip-code</label>
                 <input type='text' name='zip_code' value={zip_code} onChange={handleChange}/>
                 
-                <button type='submit'>Register</button>
+                <button type='submit' onClick={onSubmit}>Register</button>
             </form>
             {errors?errors.map(e => <div>{e[0]+': ' + e[1]}</div>):null}
             <button className='link-btn' onClick={()=>onFormSwitch('login')}>Already have an account? Login here</button>
