@@ -1,18 +1,16 @@
 import { useState } from 'react'
 import { useHistory} from 'react-router-dom'
 
-
-
-
 function Register({onFormSwitch}){
     const [formData, setFormData] = useState({
         first_name: '',
-        last_name: '',
+        last_name: '', 
         email:'',
         password: '',
         zip_code: ''
     })
-    
+    const [viewer, setViewer] = useState([])
+
     const [errors, setErrors] = useState([])
     const history = useHistory()
 
@@ -36,6 +34,7 @@ function Register({onFormSwitch}){
         .then(r => {
             if(r.ok){
                 r.json().then(viewer => {
+                    setViewer(viewer)
                     history.push(`/viewers/${viewer.id}`)
                 })
             } else {

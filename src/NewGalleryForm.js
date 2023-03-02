@@ -1,24 +1,18 @@
 import { useState } from 'react'
 
-
 function NewGalleryForm({addGallery}){
-    const [formData, setFormData] = useState({
-        title: "", 
-        description: "",
-    })
+    const [formData, setFormData] = useState({title: "", description: ""})
     const [errors, setErrors] = useState([])
     
-    
-
     const handleChange = (e) => {
       const {name, value} = e.target
       setFormData({...formData, [name]:value})
     }
 
-      function handleSubmit(event) {
-        event.preventDefault();
+      function handleSubmit(e) {
+        e.preventDefault(e);
     
-        fetch("/galleries", {
+        fetch("/galleries/new", {
           method: "POST",
           headers: {"Content-Type": "application/json"},
           body: JSON.stringify({...formData}),
@@ -46,14 +40,13 @@ function NewGalleryForm({addGallery}){
               className="input-text"
             />
             <br />
-            
-            <input
+            <input 
               type="text"
               name="description"
               onChange={handleChange}
               value={formData.description}
               placeholder="Describe the new gallery"
-              className="input-text"
+              className="description-input"
             />
 
             <br />
