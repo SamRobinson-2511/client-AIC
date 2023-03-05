@@ -1,8 +1,8 @@
-import NavBar from "./NavBar";
+import NavBar from "../components/NavBar";
 import { Link } from 'react-router-dom'
 const About = () => {
     return(
-      <div>
+      <div style={{backgroundImage: `url("https://a.travel-assets.com/findyours-php/viewfinder/images/res70/237000/237487-Art-Institute-Of-Chicago.jpg")`}}>
         <NavBar/>
         <ul>
           <Link to={`/about`}></Link>

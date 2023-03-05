@@ -1,7 +1,8 @@
 import { useState, useContext } from 'react'
 import { useHistory, useParams, Link } from 'react-router-dom'
 
-function EditProfile({updateReq}){
+function EditProfile({patchReq}){
+    const [viewer, setViewer] = useState(viewer)
 
     const history = useHistory()
     const [formData, setFormData] = useState({
@@ -14,7 +15,7 @@ function EditProfile({updateReq}){
     })
     const [errors, setErrors] = useState([])
 
-    const {first_name, last_name, email, password, zip_code} = formData
+    const {id, first_name, last_name, email, password, zip_code} = formData
 
     const onSubmit = (e) => {
         e.preventDefault()
@@ -25,6 +26,9 @@ function EditProfile({updateReq}){
             password,
             zip_code
         }
+        fetch(`/viewers/${id}/edit`)
+        .then(r=>r.json())
+        .tnen(console.log)
         
 
 

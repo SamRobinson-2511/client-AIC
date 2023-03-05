@@ -1,35 +1,38 @@
 import { useEffect, useState } from 'react'
+import useFetch from './hooks/fetch-hook'
+// import EditGalleryForm from './EditGalleryForm'
 import GalleryCard from './GalleryCard'
 import NewGalleryForm from './NewGalleryForm'
 
 
-function GalleriesList({galleriesUrl}){
-    const [galleries, setGalleries] = useState([])
-
-    useEffect(()=>{
-        fetch("http://localhost:3000/galleries")
-        .then(r=>r.json())
-        .then(galleries => setGalleries(galleries))
-    },[])
-
-
-    const galleryCards = galleries.map(gallery => {
+function GalleriesList(){
+    const {data, isLoaded, error} = useFetch(`/galleries`)
+    
+    if (error !== null) {return <div>Error: {error.message}</div>}
+    if (!isLoaded) {return <div>Loading...</div>}
+    
+    
+    const galleryCards = data.map(gallery => {
         return <GalleryCard
             key={gallery.id}
             id={gallery.id}
             title={gallery.title}
             description={gallery.description}
+            image_url={gallery.image_url}
             art_id={gallery.art_id}
             />
     })
 
+    
+
     return(
-        <div className='GalleryList'>
+        <>
+        <div id='gallery-list-div'>
             <h1>Galleries List</h1>
-            <ul className='gallery-cards'>
                 {galleryCards}
-            </ul>
         </div>        
+        {/* <EditGalleryForm galleryCards={galleryCards}/> */}
+        </>
     )
 }
 
