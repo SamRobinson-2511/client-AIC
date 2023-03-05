@@ -1,59 +1,46 @@
 import { useState, useEffect } from 'react'
 import ArtCard from './ArtCard'
-import ArtCardDetails from './ArtCardDetails'
+import useFetch from './hooks/fetch-hook'
+
 
 function ArtList(){
-  const [arts, setArtArray] = useState([])
-  const [filteredArt, setFilteredArt] = useState([])
-  const [isLoading, setIsLoading]= useState(true)
-  const [errors, setErrors] = useState(false)
+  const {data, isLoaded, error} = useFetch(`arts`)
 
-  //fetch and map over arts list
-  useEffect(()=>{
-    setIsLoading(true)
-    fetch(`/arts`)
-    .then(r=>r.json())
-    .then(arts=> {
-      setArtArray(arts)
-      setFilteredArt(filteredArt)
-      setIsLoading(false)
-    })
-  },[])
-  console.log(arts)
+  if (error !== null) {
+    return <div>Error: {error.message}</div>
+  }
+  if (!isLoaded) {
+    return <div>Loading...</div>
+  }
 
-
-  
-
-  const artCard = arts.map(art => {
+  const artCard = data.map(art => {
     return <ArtCard
       key={art.id}
       id={art.id}
       title={art.title}
       artist_display={art.artist_display}
       image_id={art.image_id}
+      gallery_title={art.gallery_title}
+      category_titles={art.category_titles}
+      art_work_type_title={art.art_work_type_title}
     />
   })
-
-  const artCardDetails = arts.map(art => {
-    return <ArtCardDetails
-      key={art.id}
-      id={art.id}
-      title={art.title}
-      artist_display={art.artist_display}
-      image_id={art.image_id}
-      gallery_title={art.gallery_title}
-      art_work_type_title={art.art_work_type_title}
-      />
-  })
-
-      return(
-        <>
-          <h1>Arts</h1>
-          {artCard}
-          {artCardDetails}
-        </>
-      )
+  return(
+    <>
+    <h1 className='main-header' >Explore the Collection </h1>
+    {artCard}
+    </>
+  )
 }
 
 
 export default ArtList;
+
+// return (
+//     <div>
+//       {data.map(item => (
+//         <div>{item.id}</div>
+//       ))}
+//     </div>
+//   );
+// };

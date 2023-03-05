@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom'
 import GalleriesList from './GalleriesList'
 import Gallery from './Gallery'
 import NewGalleryForm from './NewGalleryForm'
-import About from './About'
-import NavBar from './NavBar'
+import About from './pages/About'
+import NavBar from './components/NavBar'
 import Footer from './Footer'
-import SearchBar from './SearchBar'
+import SearchBar from './components/SearchBar'
 
 function ViewerProfile(){
     const [gallery, setGallery] = useState([])

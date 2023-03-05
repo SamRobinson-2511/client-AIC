@@ -1,7 +1,7 @@
 function Footer(){
     return(
-        <div>
-            <p>thanks so much</p>
+        <div id="footer">
+            <p>thanks so much: Sam Robinson</p>
         </div>
     )
 }

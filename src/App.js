@@ -1,18 +1,24 @@
 
 import {BrowserRouter as Router, Switch, Route, useHistory} from 'react-router-dom'
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useCallback, useRef, useContext } from 'react'
 import { ViewerContext } from './ViewerContext';
+import useHover from './hooks/hover-hook'
+// import useCount from './hooks/count-hook'
 import './App.css';
 import Modal from './Modal'
-import Home from './Home'
-import NavBar from './NavBar'
-import SearchBar from './SearchBar'
+import Home from './pages/Home'
+import NavBar from './components/NavBar'
+import Auth from './Auth'
+// import Login from './Login'
+import Contact from './Contact'
+import SearchBar from './components/SearchBar'
 import ArtCard from './ArtCard'
-import About from './About'
+import About from './pages/About'
 import Footer from './Footer'
-import Login  from './Login'
+import Login  from './components/Login'
 import Logout from './Logout'
-import Register from './Register'
+import Register from './components/Register'
+import Create from './components/Create'
 import ViewerProfile from './ViewerProfile'
 import EditProfile from './EditProfileForm';
 import NewGalleryForm from './NewGalleryForm'
@@ -24,7 +30,9 @@ import ArtList from './ArtList'
 import Exhibitions from './Exhibitions';
 import GalleryCard from './GalleryCard'
 import NotFound from './NotFound'
-import NewVisitForm from './NewVisitForm';
+
+// import NewVisitForm from './NewVisitForm';
+import VisitForm from './VisitForm'
 
 function App() {
   const {viewer, setViewer} = useContext(ViewerContext)
@@ -34,14 +42,20 @@ function App() {
   const [currentForm, setCurrentForm] = useState('login')
   const [currentViewer, setCurrentViewer] = useState({})
   const [errors, setErrors] = useState(false)
-  
-  const history = useHistory()
 
+  //on hover actions
+  const [hovered, isHovered] = useHover()
+
+  //use count
+  // const count = useCount()
+  //use history
+  const history = useHistory()
   //on form switch
   const toggleForm = (formName) => { setCurrentForm(formName) }
 
 
   //routes and endpoints
+  
   const galleriesUrl = '/galleries'
   const galleryUrl = '/galleries/:id'
   const newGalleryUrl = '/galleries/new'
@@ -65,7 +79,7 @@ function App() {
   {'Content-Type':'application/json'}
   }
 
-  // // set current viewer
+  // set current viewer
   // function setViewer(viewer) {
   //   setViewer(currentViewer);
   //   setLoggedIn(true);
@@ -135,6 +149,9 @@ function App() {
     console.log('gallery deleted')
   }
 
+
+
+
   
 
   //update gallery
@@ -151,15 +168,29 @@ function App() {
   
   if(errors) return <NotFound/>
   return (
-    <div className='app-container'>  
+    <div className='main'>
+      <div id='nav-div' className='nav-bar'>
+        <span><NavBar/></span>
+        
+    
+   
     {/* <NavBar/> */}
     {/* <SearchBar/> */}
-      <Switch>
+    {/* <Footer/> */}
+    {/* <Route path='/auth' element={<Auth/>}/>
+    <Route path='/' element={<Contact/>}/> */}
+    <Switch>
+      {/* <Route path='/login'>
+        <Login/>
+      </Route>
+      <Route path='/'>
+        <Register/>
+      </Route> */}
 
         <Route exact path='/'>
         { currentForm === 'login' ? <Login onFormSwitch={toggleForm}/> : <Register onFormSwitch={toggleForm} />}
         </Route>
-
+      
         <Route path='/viewers/:id/update'>
           <EditProfile />
         </Route>
@@ -168,54 +199,57 @@ function App() {
           <Logout />
         </Route> 
 
-        <Route  path="/galleries/:id">
+        <Route  path="/galleries/:id/destroy">
           <GalleryCard handleDeleteGallery={handleDeleteGallery}/>
         </Route>
 
         <Route path="/galleries">
           <GalleriesList 
             galleriesUrl = {galleriesUrl}
-            handleDeleteGallery = {handleDeleteGallery}
             handleUpdateGallery = {handleUpdateGallery}
             handleCreateGallery = {handleCreateGallery}
+            handleDeleteGallery = {handleDeleteGallery}
             patchReq={patchReq}
             deleteReq={deleteReq}
             postReq={postReq}
-            newGalleryUrl={newGalleryUrl}p
+            newGalleryUrl={newGalleryUrl}
           />
-          {/* <NewGalleryForm/> */}
+          <Create/>
           <GalleryCard
             galleryUrl={galleryUrl}
             patchReq={patchReq}
             deleteReq={deleteReq}
           />
-          <SearchBar/>
         </Route>
 
-        <Route path="/arts">
+        <Route exact path="/arts">
           <ArtList artUrl = {artUrl}/>
-          <SearchBar artUrl = {artUrl}/>
+          {/* <SearchBar artUrl = {artUrl}/> */}
         </Route>
 
-        <Route path="/arts/:id">
+        <Route exact path="/arts/:id">
           <ArtCard/>
         </Route>
 
-        <Route path='/visits'>
+        {/* <Route path="/arts/search_arts">
+          <ArtCard/>
+        </Route> */}
+
+
+        <Route exact path='/visits'>
           <VisitsList visitsUrl={visitsUrl}/>
-          <NewVisitForm 
+          {/* <NewVisitForm 
             newVisitsUrl={newVisitsUrl}
             postReq={postReq}
-          />
+          /> */}
         </Route>
 
-        <Route path='arts/exhibitions'>
+        <Route exact path='arts/exhibitions'>
           <Exhibitions/>
         </Route>
 
-        <Route path="/about">
+        <Route exact path="/about">
           <About/>
-          <Footer/>
         </Route>
 
         <Route path='*'>
@@ -223,7 +257,9 @@ function App() {
         </Route>
 
       </Switch>
+      </div>  
     </div>
+
   ); 
 }
 

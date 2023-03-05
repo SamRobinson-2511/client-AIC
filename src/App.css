@@ -1,11 +1,50 @@
-.App {
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+.main{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+
+/* .App {
   text-align: center;
   display: flex;
   min-height: 100vh;
   align-items: center;
   justify-content: center;
   background-color: #fff;
+} */
+
+#page-container {
+  position: relative;
+  min-height: 100vh;
 }
+
+#content-wrap {
+  padding-bottom: 2.5rem;    /* Footer height */
+}
+
+
+
+
+#footer {
+  position: relative;
+  bottom: 0;
+  background-color: maroon;
+  width: 100%;
+  height: 2.5rem;            /* Footer height */
+}
+
+#searchbar{
+  justify-content: right;
+  position: relative;
+}
+
+
+
 
 /* .header {
   display: flex;
@@ -16,11 +55,15 @@
   padding: 1rem;
 } */
 
-.auth-form-container, .login-form, .reg-form, .collection-search, .gallery-form, .edit-form-container {
+.auth-form-container, .login-form, .reg-form, .gallery-form, .edit-form-container {
   display: flex;
   flex-direction: column;
+  
 }
 
+.about{
+  background-color: red;
+}
 @media screen and (min-width: 600px) {
   .auth-form-container {
       padding: 5rem;
@@ -36,13 +79,17 @@
   border-radius: 10px;
 }
 
-
 label{
   text-align: left;
   padding: 0.25rem 0;
 }
 
 input{
+  margin: 0.5rem 0;
+  padding: 1rem;
+  border-radius: 7px;
+}
+select{
   margin: 0.5rem 0;
   padding: 1rem;
   border-radius: 7px;
@@ -74,58 +121,157 @@ button {
   box-shadow: 0 2px 2px 2px rgba(9, 9, 9, 0.23);
 } */
 
-ul {
+/* ul {
   list-style-type: none;
   margin: 0;
   padding: 0; 
   width: 200px;
   background-color: #f1f1f1;
-}
+} */
 
-li {
+/* a {
   display: block;
   color: #000;
   padding: 8px 16px;
   text-decoration: none;
+} */
+
+
+/* .nav-container{
+  width: 10px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  margin-top:10px;
+} */
+/* #navbar {
+  background-color: rgb(48, 162, 255);
+  border-radius: 0 8px 8px 0;
+  transform: translateX(calc(-100% + 10px));
+  transition: transform .4s cubic-bezier(.4, 0, .2, 1) .2s;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+} */
+
+
+/* #navbar{
+  position: relative;
+} */
+
+.link-container {
+  font-size: 18px;
+  display: flex;
 }
 
-.nav-bar {
-  overflow: hidden;
-  background-color: #fff;
-  position: fixed; /* Set the navbar to fixed position */
-  top: 0; /* Position the navbar at the top of the page */
-  width: 100%; /* Full width */
-  height: 200px
+.link-container a{
+  color:maroon;
+  text-decoration: none;
+  display: block;
+  padding: 6px 12px;
 }
-nav .nav-link {
+
+.link-container a:hover{
+  text-decoration: underline;
+  background-color: grey;
+}
+
+.nav-link{
+  display:inline-block;
+  font: arial;
+}
+/* .nav-bar a{
+  float: left;
+  display: block;
+  color: black;
+  text-align: center;
+  padding: 14x 16px;
+  text-decoration: none;
+  font-size: 17px;
+} */
+
+/* .nav-bar a:hover{
+  background-color: #ddd;
+  color: black;
+}
+
+.nav-bar a.active{
+  background-color: #ddd;
+  color: black;
+} */
+
+/* .topnav input[type=text] {
+  float: right;
+  padding: 6px;
+  border: none;
+  margin-top: 8px;
+  margin-right: 16px;
+  font-size: 17px;
+} */
+
+
+/* nav .nav-link {
   display: block;
   float: left;
   background-color: maroon;
   border: 4px solid;
-}
+} */
+
+
 
 /* gallery cards */
+.gallery-list-div{
+  background-color: maroon;
+}
+
 
 .small-btn {
   border: black;
   border-radius: 100px;
 }
-
 .title{
   display: flex;
 }
+.visit-card, .gallery-card {
+  transition: 0s background-color;
+}
 
 
-.cards, .gallery-card, .visit-cards {
-  text-align: center;
+.gallery-card:hover {
+  text-align: center;    
+  transition-delay:1s;
   margin: 1rem;
   box-shadow: 0 0 7px 0 #ddd;
   border-radius: 5px;
-  /* border: 1px solid #ccc; */
-  width: 300px;
+
+  display: flex;
+  border: 1px solid #ccc;
+  width: 100%
 }
 
-/* .visit-div{
+
+
+.art-card:hover {
+  background-color: maroon;
+  text-align: center;
+  margin: 0.25rem;
+  box-shadow: 0 0 7px 0 #ddd;
+  border-radius: 1px;
+  display: flex;
+  justify-content: center;
+  border: 1px solid #ccc;
+  width: 100%;
+}
+.artist-name{
+  font-family: 'Montserrat', sans-serif;
+}
+
+.visit-cards{
+
+}
+/* .-div{
   flex-direction: column;
 } */
 
@@ -141,6 +287,7 @@ footer {
 }
 
 
+
 /* .user-profile {
   flex-direction: column;
 } */
@@ -153,4 +300,8 @@ footer {
 
 .description-input{
   background-color: maroon;
+}
+
+.art-details{
+  background-color: red;
 }

@@ -1,5 +1,7 @@
 import {useState, useContext} from 'react'
 import {ViewerContext} from './ViewerContext'
+import Input from './components/Input'
+import { useForm} from './'
 
 function NewVisitForm({addVisit, newVisitsUrl, postReq}){
     const {viewer, setViewer} = useContext(ViewerContext)

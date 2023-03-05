@@ -8,7 +8,7 @@ function ArtCardDetails({title, artist_display, image_id, gallery_title, artwork
     }
 
     return(
-        <div className="art-card-details">
+        <div className="art-details">
             <h2>{title}</h2>
             <p>{artist_display}</p>
             <p>{image_id}</p>
