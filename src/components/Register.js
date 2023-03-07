@@ -1,7 +1,8 @@
 import Input from  './Input'
 import {useForm} from '../hooks/form-hook'
+import {useHistory} from 'react-router-dom'
 
-const Register = (props) => {
+const Register = ({isLoginMode,switchModeHandler}) => {
     const [formState, inputHandler] = useForm({
         first_name: {value: ''},
         last_name: {value: ''},
@@ -9,32 +10,49 @@ const Register = (props) => {
         password: {value: ''},
         zip_code: {value: ''}
     })
+    const history = useHistory()
+    
     const submitHandler = (e) => {
         e.preventDefault()
-        console.log(formState.inputs)
-        fetch('/viewers', {
-                method: 'POST', 
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(formState.inputs)
+        fetch(`/register`, {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formState.inputs)
         })
-    }
+        .then(res => {
+            console.log(res)
+              if(res.ok){
+                  res.json().then(viewerInfo => {
+                    // setViewer(viewerInfo)
+                    console.log(viewerInfo)
+                    history.push(`/`)
+                  })
+              } else {
+                //   res.json().then(json => setErrors(json.errors))
+              }
+          })
+        }
 
 
     return(
     <div className='auth-form-container'>
         <form className='reg-form'onSubmit={submitHandler}>
             <Input 
-                id='first-name' 
+                className='input'
+                id='first_name' 
                 element='input' 
                 type='text'
-                label='first-name'
+                label='first_name'
                 onInput={inputHandler}
             />
             <Input 
+                className='input'
                 id='last_name' 
                 element='input' 
                 type='text'
-                label='last-name'
+                label='last_name'
                 onInput={inputHandler}
             />
             <Input 
@@ -54,12 +72,13 @@ const Register = (props) => {
             <Input 
                 id='password' 
                 element='input' 
-                type='text'
+                type='password'
                 label='password'
                 onInput={inputHandler}
             />
 
             <button type='submit'> Register </button>
+            <button type='button' onClick={switchModeHandler}>Accounted for? {isLoginMode ? 'SIGNUP' : 'LOGIN'}</button>
         </form>
     </div>
     )

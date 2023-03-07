@@ -1,13 +1,15 @@
 import {useState, useContext} from 'react'
-import {ViewerContext} from './ViewerContext'
+import {ViewerContext} from './context/ViewerContext'
 import Input from './components/Input'
-import { useForm} from './'
+import {useHistory} from 'react-router-dom'
+import usePost from './hooks/post-hook'
 
 function NewVisitForm({addVisit, newVisitsUrl, postReq}){
-    const {viewer, setViewer} = useContext(ViewerContext)
+    const {setViewer} = useContext(ViewerContext)
     const [formData, setFormData] = useState({})
     const [errors, setErrors] = useState([])
-    console.log(viewer)
+    const {postData} = usePost({})
+    console.log({setViewer})
     
     const handleChange = (e) => {
       const {name, value} = e.target
@@ -16,8 +18,8 @@ function NewVisitForm({addVisit, newVisitsUrl, postReq}){
 
       function handleSubmit(e) {
         e.preventDefault(e);
+        
       }
-      console.log(newVisitsUrl)
       
       return (
         <div className="visit-form">

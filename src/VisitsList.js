@@ -1,37 +1,109 @@
-import { useEffect, useState, useRef } from 'react'
+import { useState, useContext } from 'react'
+import {ViewerContext} from './context/ViewerContext.js'
 import VisitCard from './VisitCard'
 import NewVisitForm from './NewVisitForm'
-import SearchBar from './components/SearchBar'
 import useFetch from './hooks/fetch-hook'
+import useCount from './hooks/count-hook'
+// import usePost from './hooks/post-hook'
+import Input from './components/Input'
 
 
-function VisitsList({visitsUrl}){
+function VisitsList(){
     const [visits, setVisits] = useState([])
-const {data, error, isLoaded} = useFetch(`visits`)
-    const counter = useRef()
+    const [formData, setFormData] = useState({})
+    const {data, isLoaded, error} = useFetch(`visits`)
+    const {add, count} = useCount(0)
+    const {viewer, setViewer} = useContext(ViewerContext)
+    
+    // const {response, error, isLoading, postData} = usePost(`/visits/new`, formData)
+
 
     if (error !== null) {return <div>Error: {error.message}</div>}
     if (!isLoaded) {return <div>Loading...</div>}
+    
+    
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        fetch(`/visits/new`, {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(res => {
+              if(res.ok){
+                  res.json().then(visits => {
+                    setVisits(visits)
+                  })
+              } else {
+                //   res.json().then(json => setErrors(json.errors))
+              }
+          })
+        }
+
+    const handleChange = (e) => {
+        console.log(viewer)
+        const {name, value} = e.target
+        setFormData({...formData, [name]: value })
+    }
+
+    // if (isLoading) {return <div>Loading...</div>}
+
+    // if (error) {return <div>An error occurred: {error.message}</div>}
+
+    // if (response){return <div>Response received: {JSON.stringify(response)}</div>}
 
 
-    const visitCards = data.map(data => {
+    const visitCards = data.map(visit => {
         return <VisitCard
-            key={data.id}
-            id={data.id}
-            comment={data.comment}
-            date={data.date}
+            key={visit.id}
+            id={visit.id}
+            comment={visit.comment}
+            date={visit.date}
         />
     })
 
+   
+
+    const handleDetails = (e) => {
+        console.log(e)
+    }
+
+
     return(
-        <div id="visit-list-div">
-        <div className='visit-card'>
-            <h1> Visits List  </h1>
-                <ul>{visitCards}</ul>
+        <>
+
+        <div className='create-visit-form'>
+            <p>Visits: {count}</p>
+            <br/>
+            <div> 
+            <form onSubmit={handleSubmit}>
+                <input type='text' name='viewer_id' placeholder="viewer-id" onChange={handleChange}/>
+                <input type='text' name='date' placeholder='date' onChange={handleChange}/>
+                <input type='text' name='comment' placeholder='comment' onChange={handleChange}/>
+                {/* <Input type='text' name='name' onInput={handleInput}/> */}
+                {/* <Input type='text' name='name' onInput={handleInput}/> */}
+                <button type='submit' onClick={handleSubmit}>Add Visit </button> 
+            </form>
+            
+            
+            
+            
+            <div className="visit-card-container" 
+                onMouseEnter={handleDetails}
+            >
+            <h1> Your VISITS  </h1>
+                {visitCards}
+                </div>
             </div>
         </div>
+        </>
     )
 }
 
 
 export default VisitsList;
+
+{/* <div className="gallery-card" onClick={handleDetails}>
+                <div className="gallery-title"></div> */}

@@ -1,7 +1,6 @@
 import { useEffect, useState} from 'react'
 import { Link } from 'react-router-dom'
 import GalleriesList from './GalleriesList'
-import Gallery from './Gallery'
 import NewGalleryForm from './NewGalleryForm'
 import About from './pages/About'
 import NavBar from './components/NavBar'

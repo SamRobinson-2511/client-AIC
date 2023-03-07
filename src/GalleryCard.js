@@ -1,12 +1,15 @@
 import { useHistory } from 'react-router-dom'
+import GalleryDetail from './GalleryDetail'
+import DeleteButton from './components/DeleteButton'
 
 
-function GalleryCard({id, title, description, art_id, image_id, image_url, handleDeleteGallery}) {
+function GalleryCard({id, title, description, art_id, image_id, image_url, arts, handleDeleteGallery}) {
 
     const history = useHistory()
 
     const handleDetails = (e) =>  {
-        history.push(`/galleries/${id}`)
+        history.push(`galleries/${id}`)
+        
     }    
     
         return(
@@ -18,9 +21,7 @@ function GalleryCard({id, title, description, art_id, image_id, image_url, handl
                     <p>{description}</p>
                     <p>{image_id}</p>
                     <p>{id}</p>
-                    <p>{art_id}</p>
-                    
-                    {/* <button onClick={handleDeleteGallery}>Delete</button> */}
+                    <p>{arts}</p>
                 </div>
             </div>
         </>

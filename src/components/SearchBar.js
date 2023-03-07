@@ -1,31 +1,34 @@
 import {useState} from 'react'
+import useSearch from '../hooks/search-hook'
 import { useHistory } from 'react-router-dom'
 import Input from './Input'
 
 
 
 // {props,searchArts, onChangeSearch}
-function SearchBar(searchArts, onChangeSearch, postReq){
+function SearchBar({ data }){
     const history = useHistory()
-    const [searchInput, setSearchInput] = useState("")
-
+    const [searchKey, setSearchKey] = useState("")
+    const filteredData = useSearch(data, searchKey)
     
-    
-    const options = ['galleries', 'visits', 'arts', 'reviews'];
+    const options = ['galleries', 'visits', 'arts', 'reviews', 'about'];
 
     const onOptionChangeHandler = (e) => {
-        history.push((`/${e.target.value}/search`))
+        history.push((`/${e.target.value}`))
         console.log("User Selected Value-", e.target.value)
     }
 
-    const handleSearch = (e) => {
-        fetch(`/arts/search`, {
-            postReq,
-            body: JSON.stringify(e.target)
-        })
-        .then(r => r.json())
-        .then(console.log)
-    }
+    // const handleSearch = (e) => {
+    //     fetch(`/arts/search`, {
+    //         postReq,
+    //         body: JSON.stringify(e.target)
+    //     })
+    //     .then(r => r.json())
+    //     .then(search => {
+    //         setSearchInput(searchInput)
+    //     })
+    //     console.log(searchInput)
+    // }
 
     // const handleSearch = (e) => {
     //     setSearchInput(e.target)
@@ -45,15 +48,13 @@ function SearchBar(searchArts, onChangeSearch, postReq){
             id='search'
             type='text'
             placeholder='Search'
-            onInput={handleSearch}
-            value={searchInput}
+            onInput={(e) => setSearchKey(e.target)}
+            value={searchKey}
         />
+        {/* {filteredData.map((item)=>(
+            <div key={item.id}>{item.name}</div>
+        ))} */}
         
-            
-            
-            
-            
-            
             {/* <input
             type="text"
             id="search"

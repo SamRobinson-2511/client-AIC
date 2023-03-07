@@ -29,5 +29,6 @@ export const useForm = (initialInput) => {
     }, [])
 
     return [formState, inputHandler, setFormData]
-
 }
+
+export default useForm;

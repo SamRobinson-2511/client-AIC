@@ -1,8 +1,13 @@
 
 import {BrowserRouter as Router, Switch, Route, useHistory} from 'react-router-dom'
 import React, { useState, useEffect, useCallback, useRef, useContext } from 'react'
-import { ViewerContext } from './ViewerContext';
+
+import { ViewerContext } from './context/ViewerContext';
 import useHover from './hooks/hover-hook'
+import useFetch from './hooks/fetch-hook'
+import useForm from './hooks/form-hook'
+import useDelete from './hooks/delete-hook'
+import useCollapse from 'react-collapse'
 // import useCount from './hooks/count-hook'
 import './App.css';
 import Modal from './Modal'
@@ -12,7 +17,7 @@ import Auth from './Auth'
 // import Login from './Login'
 import Contact from './Contact'
 import SearchBar from './components/SearchBar'
-import ArtCard from './ArtCard'
+import ArtCard from './pages/ArtCard'
 import About from './pages/About'
 import Footer from './Footer'
 import Login  from './components/Login'
@@ -27,15 +32,40 @@ import VisitsList from './VisitsList';
 import EditGalleryForm from './EditGalleryForm'
 import GalleryDetail from './GalleryDetail'
 import ArtList from './ArtList'
+import ArtCardDetails from './pages/ArtCardDetails';
 import Exhibitions from './Exhibitions';
 import GalleryCard from './GalleryCard'
 import NotFound from './NotFound'
 
+
+
 // import NewVisitForm from './NewVisitForm';
 import VisitForm from './VisitForm'
 
+function Collapsible() {
+  const { getCollapseProps, getToggleProps, isExpanded } = useCollapse();
+return (
+  <div className="collapsible">
+      <div className="header" {...getToggleProps()}>
+          {isExpanded ? 'Collapse' : 'Expand'}
+      </div>
+      <div {...getCollapseProps()}>
+          <div className="content">
+              Now you can see the hidden content. <br/><br/>
+              Click again to hide...
+          </div>
+      </div>
+  </div>
+  );
+}
+
 function App() {
   const {viewer, setViewer} = useContext(ViewerContext)
+  const {items, deleteItems} = useDelete(null)
+
+  
+  
+  
   // dark mode 
   
   const [loggedIn, setLoggedIn] = useState(false)
@@ -45,6 +75,7 @@ function App() {
 
   //on hover actions
   const [hovered, isHovered] = useHover()
+  const [isLoginMode, setIsLogInMode] = useState(true)
 
   //use count
   // const count = useCount()
@@ -56,10 +87,11 @@ function App() {
 
   //routes and endpoints
   
-  const galleriesUrl = '/galleries'
+  // const galleriesUrl = '/galleries'
   const galleryUrl = '/galleries/:id'
   const newGalleryUrl = '/galleries/new'
-  const artUrl = '/arts'
+  const artsUrl = '/arts'
+  
   const visitsUrl = '/visits'
   const newVisitsUrl = '/visits/new'
   const logoutUrl = '/logout'
@@ -124,10 +156,10 @@ function App() {
   //   .then(console.log)
   // },[])
 
-  const handleUpdateProfile = (e) => {
-    e.preventDefault()
-    console.log(e)
-  }
+  // const handleUpdateProfile = (e) => {
+  //   e.preventDefault()
+  //   console.log(e)
+  // }
 
   //gallery actions 
   const handleCreateGallery = (e) => {
@@ -149,6 +181,26 @@ function App() {
     console.log('gallery deleted')
   }
 
+  
+  // const switchModeHandler = () => {
+  //   if(!isLoginMode){
+  //     setFormData({
+  //       // first_name: {value: ''},
+  //       // last_name: {value: ''},
+  //       // email: {value: ''},
+  //       // password: {value: ''},
+  //       // zip_code: {value: ''}
+  //     })
+  //   } else {
+  //     setFormData({
+  //       ...formState.inputs, 
+  //       name: {value: ''}
+  //     })
+  //   }
+  //   setIsLogInMode(prevMode => !prevMode)
+  //   history.push(`/register`)
+  // }
+  
 
 
 
@@ -168,97 +220,97 @@ function App() {
   
   if(errors) return <NotFound/>
   return (
-    <div className='main'>
-      <div id='nav-div' className='nav-bar'>
-        <span><NavBar/></span>
-        
+    <>
     
-   
-    {/* <NavBar/> */}
-    {/* <SearchBar/> */}
-    {/* <Footer/> */}
-    {/* <Route path='/auth' element={<Auth/>}/>
-    <Route path='/' element={<Contact/>}/> */}
-    <Switch>
-      {/* <Route path='/login'>
-        <Login/>
-      </Route>
-      <Route path='/'>
-        <Register/>
-      </Route> */}
+    <Router>
+      <div className='main'>
+        <div className="container-fluid">
+          <NavBar/>
+            <Switch>
+          <Route exact path = '/'>
+            <Home/>
+          </Route>
 
-        <Route exact path='/'>
-        { currentForm === 'login' ? <Login onFormSwitch={toggleForm}/> : <Register onFormSwitch={toggleForm} />}
-        </Route>
-      
-        <Route path='/viewers/:id/update'>
-          <EditProfile />
-        </Route>
+          <Route exact path='/login'>
+            <Login />
+          {/* { currentForm === 'login' ? <Login onFormSwitch={toggleForm}/> : <Register onFormSwitch={toggleForm} />} */}
+          </Route>
 
-        <Route path='/logout'>
-          <Logout />
-        </Route> 
+          <Route exact path='/register'>
+            <Register />
+          </Route>
 
-        <Route  path="/galleries/:id/destroy">
-          <GalleryCard handleDeleteGallery={handleDeleteGallery}/>
-        </Route>
+          <Route path='/viewers/:id/update'>
+            <EditProfile />
+          </Route>
 
-        <Route path="/galleries">
-          <GalleriesList 
-            galleriesUrl = {galleriesUrl}
-            handleUpdateGallery = {handleUpdateGallery}
-            handleCreateGallery = {handleCreateGallery}
-            handleDeleteGallery = {handleDeleteGallery}
-            patchReq={patchReq}
-            deleteReq={deleteReq}
-            postReq={postReq}
-            newGalleryUrl={newGalleryUrl}
-          />
-          <Create/>
-          <GalleryCard
-            galleryUrl={galleryUrl}
-            patchReq={patchReq}
-            deleteReq={deleteReq}
-          />
-        </Route>
+          <Route path='/logout'>
+            <Logout />
+          </Route> 
+          <Route path='/create'>
+            <Create />
+          </Route>
+          <Route  path="/galleries/:id/">
+            <GalleryDetail/>
+          </Route>
 
-        <Route exact path="/arts">
-          <ArtList artUrl = {artUrl}/>
-          {/* <SearchBar artUrl = {artUrl}/> */}
-        </Route>
+          <Route  path="/galleries/:id/destroy">
+            <GalleryCard handleDeleteGallery={handleDeleteGallery}/>
+          </Route>
 
-        <Route exact path="/arts/:id">
-          <ArtCard/>
-        </Route>
+          <Route path="/galleries">
+            <GalleriesList />
+            {/* <GalleryCard
+              galleryUrl={galleryUrl}
+              patchReq={patchReq}
+              deleteReq={deleteReq}
+            /> */}
+          </Route>
+          
 
-        {/* <Route path="/arts/search_arts">
-          <ArtCard/>
-        </Route> */}
+          <Route path="/arts">
+            <ArtList artsUrl = {artsUrl}/>
+          </Route>
+
+          <Route exact path="/arts/:id">
+            <ArtCardDetails/>
+          </Route>
+
+          {/* <Route path="/arts/search_arts">
+            <ArtCard/>
+          </Route> */}
 
 
-        <Route exact path='/visits'>
-          <VisitsList visitsUrl={visitsUrl}/>
-          {/* <NewVisitForm 
-            newVisitsUrl={newVisitsUrl}
-            postReq={postReq}
-          /> */}
-        </Route>
+          <Route exact path='/visits'>
+            <VisitsList visitsUrl={visitsUrl}/>
+            {/* <NewVisitForm 
+              newVisitsUrl={newVisitsUrl}
+              postReq={postReq}
+            /> */}
+          </Route>
 
-        <Route exact path='arts/exhibitions'>
-          <Exhibitions/>
-        </Route>
+          <Route exact path='arts/exhibitions'>
+            <Exhibitions/>
+          </Route>
 
-        <Route exact path="/about">
-          <About/>
-        </Route>
+          <Route exact path="/about">
+            <About/>
+          </Route>
 
-        <Route path='*'>
-          <NotFound/>
-        </Route>
+          {/* <Route exact path="/collapsible">
+            <Collapsible/>
+          </Route> */}
+
+          <Route path='*'>
+            <NotFound/>
+          </Route>
 
       </Switch>
       </div>  
     </div>
+    <Footer/>
+    </Router>
+    </>
 
   ); 
 }

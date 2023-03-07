@@ -1,5 +1,5 @@
 import {useState} from 'react'
-import {useForm} from './hooks/form-hook'
+import useForm from './hooks/form-hook'
 import {useHistory} from 'react-router-dom'
 import Input from './components/Input'
 
@@ -44,15 +44,15 @@ const EditGalleryForm = ({patchReq, id}) => {
                     element='input'
                     id='email'
                     type='text'
-                    label='email'
+                    label='title'
                     onInput={inputHandler}
                 />
 
                 <Input
                     element= 'input'
                     id='password'
-                    type='password'
-                    label='password'
+                    type='text'
+                    label='comment'
                     onInput={inputHandler}
                 />
                 <button type='submit'>Edit Gallery</button>

@@ -1,40 +1,46 @@
-import {useEffect, useState} from 'react'
 
 
-function GalleryDetail({deleteGallery}){
-    const [gallery, setGallery] = useState({title: "", viewer_id: "", description: "", art_id:""})
-    const [errors, setErrors] = useState(false)
-    
-    
-
-    //fetch one gallery 
-    useEffect(()=>{
-        fetch(`/galleries/`)
-        .then(res => {
-            if(res.ok){
-                res.json().then(setGallery)
-            } else {
-                res.json().then(setErrors)
-            }
-        })
-    }, [])
+import DeleteButton from './components/DeleteButton'
+import UpdateButton from './components/UpdateButton'
+import LikeButton from './components/LikeButton'
+import usePatch from './hooks/patch-hook'
+import useFetch from './hooks/fetch-hook'
 
 
 
-    function handleDelete(){
-        //DELETE to `/galleries/${params.id}`
+function GalleryDetail({id}){
+    const [value, patchValue] = usePatch('initial value')
+    // const [gallery, setGallery] = useState({title: "", viewer_id: "", description: "", art_id:""})
+    // const [errors, setErrors] = useState(false)
+    // const {data, error, isLoaded} = useFetch(`galleries/${galleryCards.id}`)
+    // if (error !== null) {
+    //     return <div>Error: {error.message}</div>
+    //   }
+    //   if (!isLoaded) {
+    //     return <div>Loading...</div>
+    // }
+    const handlePatch = (e) => {
+        patchValue('new value')
     }
-    const {viewer_id, art_id, title, description} = gallery
+
+    
+    const handleLike = (e) => {
+        console.log(e)
+    }
+    
 
     return(
-
-        <h1> render gallery details here </h1>
-        
-            
+        <div className='gallery-details-container'>
+            <h1> Gallery Detail </h1>
+                {/* <h1>{title}</h1>
+                <p>Gallery id:{id}</p>
+                <p>Arts within gallery: {arts}</p> */}
+                <UpdateButton onClick={handlePatch}/>
+                <DeleteButton url={`/galleries/${id}`}/>
+                <LikeButton />
+        </div>    
     )
-
-
-
 }
+
 
 export default GalleryDetail;
