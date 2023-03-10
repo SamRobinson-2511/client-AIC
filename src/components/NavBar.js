@@ -35,27 +35,13 @@ const NavBar = ({handleLogout}) => {
          
 
             <div className='navbar-nav'>
-                <div className='link-container'>
-                    <li className="nav-link"><Link to='/arts'>Arts</Link></li>
-                </div>
-                <div className='link-container'>
-                    <li className="nav-link"><Link to='/galleries'>Galleries</Link></li>
-                </div>
-                <div className='link-container'>
-                    <li className='nav-link'><Link to='/galleries/:id/edit'>Edit Gallery</Link></li>
-                </div>
-                <div className='link-container'>
-                    <li className="nav-link"><Link to='/visits'>Visits</Link></li>
-                </div>
-                {/* <div className='link-container'>
-                    <li className='nav-link'><Link to='/editprofile'>Edit Profile</Link></li>
-                </div> */}
-                <div>
-                    <li className="nav-link"><Link to='/about'>About</Link></li>
-                </div>
-                <div className='link-container'>
-                    <li className="nav-link"><Link onClick={handleLogout} to='/logout'>Logout</Link></li>
-                </div>    
+                <div className='link-container'><li className="nav-link"><Link to='/arts'>Arts</Link></li></div>
+                <div className='link-container'><li className="nav-link"><Link to='/galleries'>Galleries</Link></li></div>
+                <div className='link-container'><li className='nav-link'><Link to='/galleries/:id/edit'>Edit Gallery</Link></li></div>
+                <div className='link-container'><li className="nav-link"><Link to='/visits'>Visits</Link></li></div>
+                <div className='link-container'><li className='nav-link'><Link to='/editprofile'>Edit Profile</Link></li></div>
+                <div><li className="nav-link"><Link to='/about'>About</Link></li></div>
+                <div className='link-container'><li className="nav-link"><Link onClick={handleLogout} to='/logout'>Logout</Link></li></div>    
             </div>
         </nav>
             

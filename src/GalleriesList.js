@@ -18,12 +18,12 @@ import SearchBar from './components/SearchBar'
 
 
 function GalleriesList(){
-    const [gallery, setGallery] = useState({})
+    const [gallery, setGallery] = useState([])
     const [galleries, setGalleries] = useState([])
     const {viewer, setViewer} = useContext(ViewerContext)
-    const {data, isLoaded, error} = useFetch(`galleries`)
+    const {data, isLoaded, error} = useFetch(`/galleries`)
 
-    console.log(viewer)
+    console.log(setViewer(viewer))
     // const galleriesByType = galleries.filter(gallery => {
     //     if(typeFilter === 'all') {
     //         return galleries
@@ -31,13 +31,15 @@ function GalleriesList(){
     //         return gallery.type === typeFilter
     //     }
     // })
+
+    
+    console.log(viewer)
     const handleDetails = (e) => {
-        console.log(e.target.value)
     }
 
     const history = useHistory()
-    // if (error !== null) {return <div>Error: {error.message}</div>}
-    // if (!isLoaded) {return <div>Loading...</div>}
+    if (error !== null) {return <div>Error: {error.message}</div>}
+    if (!isLoaded) {return <div>Loading...</div>}
 
     
 
@@ -55,6 +57,8 @@ function GalleriesList(){
             gallery={gallery}
             />
         })
+
+
     
 
         

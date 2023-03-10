@@ -1,59 +1,104 @@
 
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import {useHistory} from 'react-router-dom'
 import { ViewerContext } from './context/ViewerContext'
-import useFetch from './hooks/fetch-hook'
+
 
 
 function NewGalleryForm(){
     const { viewer, setViewer} = useContext(ViewerContext)
-    const [title, setTitle] = useState('')
-    const [description, setDescription] = useState('')
-    const [arts, setArts] = useState({})
+
+    const [galleries, setGalleries] = useState([])
+
+    // const [title, setTitle] = useState('')
+    // const [description, setDescription] = useState('')
+
+
+
+    // const [arts, setArts] = useState({})
     const [gallery, setGallery] = useState([])
+    
     const [errors, setErrors] = useState([])
+   
 
     const history = useHistory()
 
-    
+    // useEffect(()=>{
+    //   fetch(`/galleries`)
+    //   .then(r=>r.json())
+    //   .then(galleries => setGalleries(galleries))
+    // }, [])
 
     
+    useEffect(() => fetchGalleries(), [])
+    
+    function fetchGalleries() {
+      fetch("/galleries")
+      .then(r => r.json())
+      .then(setGalleries)
+    }
+    
+    const [title, setTitle] = useState('')
+    const [description, setDescription] = useState('')
+
+    function handleSubmit(e) {
+      e.preventDefault()
+
+      let newGally = {
+        title: title,
+        description: description
+      }
+
+      setTitle("")
+      setDescription("")
+
+      let gallyPost = {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newGally)
+      }
+
+      fetch("/galleries", gallyPost)
+      .then(r => r.json())
+      .then(newGally => setGalleries([...galleries, newGally]))
+
+    }
+
+
+
+
     // const handleChange = (e) => {
     //   const {name, value} = e.target.value
     //   setFormData({...formData, [name]:value})
     // }
 
 
-    function handleSubmit(e) {
-      e.preventDefault(e);
-      const newGallery = {
-        viewer_id: viewer.id,
-        title: title,
-        description: description
-      }
-      setErrors(null)
-
-      
-      fetch("/galleries", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(newGallery)
-        })
-        .then(r => {
-          if(r.ok){
-            r.json().then(gallery => {
-              setGallery(gallery)
-              history.push(`/galleries`)
-            })
-          } else {
-            r.json().then(errorInfo => setErrors((errorInfo.errors)))
-          }
-        })
-      }
-
-  
-
-
+    // function handleSubmit(e) {
+    //   e.preventDefault(e);
+    //   const newGallery = {
+    //     title: title,
+    //     description: description
+    //   }
+    //   setTitle(" ")
+    //   setDescription(" ")
+    //   fetch("/galleries", {
+    //     method: "POST",
+    //     headers: {"Content-Type": "application/json"},
+    //     body: JSON.stringify(newGallery)
+    //     })
+    //     .then(r => {
+    //       if(r.ok){
+    //         r.json().then(newGallery => {
+    //           setGalleries([...galleries, newGallery])
+    //           // history.push(`/galleries`)
+    //         })
+    //       } else {
+    //         r.json().then(errorInfo => setErrors((errorInfo.errors)))
+    //       }
+    //     })
+    //   }
 
       return (
         <div className="gallery-form">
