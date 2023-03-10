@@ -1,5 +1,5 @@
 import Input from './components/Input'
-import {useForm} from './hooks/form-hook'
+import useForm from './hooks/form-hook'
 
 const Visit = (props) => {
     const [formState, inputHandler] = useForm({

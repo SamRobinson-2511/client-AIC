@@ -10,9 +10,12 @@ import useFetch from './hooks/fetch-hook'
 
 
 
+
 function VisitCard({id, comment, date, arts,}) {
+    const {viewer, setViewer} = useContext(ViewerContext)
     const [details, setDetails] = useState([])
-    const {data, error, isLoaded} = useFetch(`/visits/`)
+    const {data, error, isLoaded} = useFetch(`/visits`)
+    
     
     
     
@@ -25,12 +28,18 @@ function VisitCard({id, comment, date, arts,}) {
     return(
         <>
         <div className="visit-card">
-                <p>{comment}</p>
-                <p>{date}</p>
-                <p>{id}</p>
-                <DeleteButton url={`/visits/${id}`}/>
-                <button onClick={handleDetails}>Details</button>
+            <div className="visit-card-comment"><p>{comment}</p>
+                <div className="visit-date-div"><p>{date}</p>
+                    <div className='visit-button-div'>
+                        <div className="delete-button"><DeleteButton url={`/visits/${id}`}/>
+                        <div>
+                            <button onClick={handleDetails}>Details</button>
+                        </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+        </div>
         </>
     )
 }

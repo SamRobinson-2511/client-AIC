@@ -1,6 +1,7 @@
 import { useState, useContext } from 'react'
 import {ViewerContext} from './context/ViewerContext.js'
 import VisitCard from './VisitCard'
+import VisitDetails from './pages/VisitDetails'
 import NewVisitForm from './NewVisitForm'
 import useFetch from './hooks/fetch-hook'
 import useCount from './hooks/count-hook'
@@ -24,7 +25,7 @@ function VisitsList(){
     
     const handleSubmit = (e) => {
         e.preventDefault()
-        fetch(`/visits/new`, {
+        fetch(`/visits`, {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json'
@@ -43,7 +44,6 @@ function VisitsList(){
         }
 
     const handleChange = (e) => {
-        console.log(viewer)
         const {name, value} = e.target
         setFormData({...formData, [name]: value })
     }
@@ -61,6 +61,7 @@ function VisitsList(){
             id={visit.id}
             comment={visit.comment}
             date={visit.date}
+            count={count}
         />
     })
 
@@ -75,7 +76,6 @@ function VisitsList(){
         <>
 
         <div className='create-visit-form'>
-            <p>Visits: {count}</p>
             <br/>
             <div> 
             <form onSubmit={handleSubmit}>
@@ -98,6 +98,7 @@ function VisitsList(){
                 </div>
             </div>
         </div>
+        {/* <VisitDetails visitCards={visitCards}/> */}
         </>
     )
 }

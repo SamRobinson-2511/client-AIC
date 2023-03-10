@@ -5,8 +5,8 @@ import { Button, Form } from 'semantic-ui-react'
 
 const Create = () => {
     return(
-        <div className="create">
-        <h2>Add Create form</h2>
+        <div className="create-form">
+        
         </div>
     )
 }
