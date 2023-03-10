@@ -6,7 +6,7 @@ import { ViewerContext } from './context/ViewerContext'
 
 
 function NewGalleryForm(){
-    const { viewer, setViewer} = useContext(ViewerContext)
+    // const { viewer, setViewer} = useContext(ViewerContext)
 
     const [galleries, setGalleries] = useState([])
 
