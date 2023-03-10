@@ -18,7 +18,7 @@ function DeleteButton({url}){
       }
     
       if (response) {
-        return <div>Resource deleted!</div>;
+        return <div>It gone</div>;
       }
     
       if (showConfirmation) {
@@ -33,7 +33,7 @@ function DeleteButton({url}){
         );
       }
     
-      return <button onClick={handleClick}>Delete resource</button>;
+      return <button onClick={handleClick}>Delete</button>;
     }
 
 

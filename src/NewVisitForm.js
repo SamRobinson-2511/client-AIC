@@ -5,11 +5,10 @@ import {useHistory} from 'react-router-dom'
 import usePost from './hooks/post-hook'
 
 function NewVisitForm({addVisit, newVisitsUrl, postReq}){
-    const {setViewer} = useContext(ViewerContext)
+    const {viewer, setViewer} = useContext(ViewerContext)
     const [formData, setFormData] = useState({})
     const [errors, setErrors] = useState([])
     const {postData} = usePost({})
-    console.log({setViewer})
     
     const handleChange = (e) => {
       const {name, value} = e.target

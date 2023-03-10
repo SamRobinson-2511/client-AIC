@@ -1,15 +1,20 @@
 import {useState} from 'react'
 
-function LikeButton(){
-    const [liked, setLiked] = useState(false)
+function LikeButton(url){
+    const [like, setLike] = useState(false)
 
     const handleLike = (e) => {
-        setLiked(!liked)
+        setLike(!like)
+        fetch(url, {
+        method: "POST",
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(like) 
+    })
     }
     return(
         <div>
             <button onClick={handleLike}>
-                {liked ? 'Liked!' : 'Like'}
+                {like ? 'Liked!' : 'Like'}
             </button>
         </div>
     )

@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, createContext } from "react"
 
-const ViewerContext = React.createContext();
+const ViewerContext = createContext();
 
 function ViewerProvider({ children }) {
   useEffect(() => {
-    fetch(`/viewer`)
+    fetch(`/me`)
     .then((r) => {
       if(r.ok) {
         r.json().then((viewerInfo) => {
@@ -12,7 +12,7 @@ function ViewerProvider({ children }) {
         }
       })
     }, [])
-    const [viewer, setViewer] = useState(null)
+    const [viewer, setViewer] = useState([])
     return <ViewerContext.Provider value={{viewer, setViewer}}>{children}</ViewerContext.Provider>
   }
 

@@ -6,12 +6,16 @@ import { ViewerContext } from '../context/ViewerContext'
 
 
 const Login = () => { 
-  const {setViewer} = useContext(ViewerContext)
+  const {viewer, setViewer} = useContext(ViewerContext)
   const [errors, setErrors] = useState(null)
-  const[loginObj, setLoginObj] = useState({
+  const[viewerObj, setViewerObj] = useState({
     email: "",
     password: ""
   })
+
+  const {email, password} = viewerObj
+
+  const history = useHistory()
   
   function handleSubmit(e) {
     e.preventDefault()
@@ -21,9 +25,10 @@ const Login = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(loginObj),
+      body: JSON.stringify(viewerObj),
     }).then((res) => {
       if (res.ok) {
+        history.push(`/home`)
         res.json().then((viewerInfo) => setViewer(viewerInfo))
       } else {
           res.json().then((err) => setErrors(err.errors))
@@ -34,14 +39,14 @@ const Login = () => {
   function handleChange(e) {
       const name = e.target.name
       const value = e.target.value
-      setLoginObj({...loginObj, [name]: value})
+      setViewerObj({...viewerObj, [name]: value})
   } 
 
   return( 
-    <div>
+    <div className="auth-form-container">
     <form>
-        <input id='email' type='text' label='email' value={loginObj.email} name='email' onInput={handleChange}/>
-        <input id='password' type='password' label='password' value={loginObj.password} name='password' onInput={handleChange}/>
+        <input id='email' type='text' label='email' value={viewerObj.email} name='email' placeholder='email' onInput={handleChange}/>
+        <input id='password' type='password' label='password' value={viewerObj.password} name='password' placeholder='password' onInput={handleChange}/>
         <button type='submit' onClick={handleSubmit}>Login</button>
       </form>
     </div>

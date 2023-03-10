@@ -1,50 +1,64 @@
 
 import {useState, useRef, useCallback, useContext, useHover} from 'react'
 import {ViewerContext} from '../context/ViewerContext'
-import { Link } from 'react-router-dom'
-import SearchBar from './SearchBar'
+import { Link } from 'react-router-dom'  
+import useCount from '../hooks/count-hook'
+import SearchBar from '../components/SearchBar'
+import ClickCounter from './ClickCounter'
+import GalleriesList from '../GalleriesList'
 
-const NavBar = () => {
+const NavBar = ({handleLogout}) => {
+    const [search, setSearch] = useState('')
+    const [galleries, setGalleries] = useState([])
+    const [arts, setArts] = useState([])
+    const [visits, setVisits] = useState([])
+    const searchGalleries = galleries.filter((gallery)=> {
+        return gallery.title?.toLowerCase().includes(search.toLowerCase())
+    })
+    const searchArts = arts.filter((art)=> {
+        return art.title?.toLowerCase().includes(search.toLowerCase())
+    })
+    const searchVisits = visits.filter((visit)=> {
+        return visit.title?.toLowerCase().includes(search.toLowerCase())
+      })
+
     
     return(
-        <>
+        <nav className='nav'>
+            <a className='site-title'>NowMuseuMe</a>
+            <div id='searchbar'>
+                {/* <SearchBar setSearch={setSearch} /> */}
+            </div>
+            <div className='click-counter'>
+                <ClickCounter  />
+            </div>
+         
 
-        <div className='navbar'>
-        <nav>
-            <a className='navbar-brand'>NowMuseuMe</a>
-            <div className='link-container'>
-                <div>
-                    <li className="nav-link"><Link to='/about'>About</Link></li>
-                </div>
+            <div className='navbar-nav'>
                 <div className='link-container'>
-                    <li className="nav-link"><Link to='/arts'>Explore</Link></li>
+                    <li className="nav-link"><Link to='/arts'>Arts</Link></li>
                 </div>
                 <div className='link-container'>
                     <li className="nav-link"><Link to='/galleries'>Galleries</Link></li>
                 </div>
-                {/* <div className='link-container'>
+                <div className='link-container'>
                     <li className='nav-link'><Link to='/galleries/:id/edit'>Edit Gallery</Link></li>
-                </div> */}
+                </div>
                 <div className='link-container'>
                     <li className="nav-link"><Link to='/visits'>Visits</Link></li>
                 </div>
                 {/* <div className='link-container'>
                     <li className='nav-link'><Link to='/editprofile'>Edit Profile</Link></li>
                 </div> */}
+                <div>
+                    <li className="nav-link"><Link to='/about'>About</Link></li>
+                </div>
                 <div className='link-container'>
-                    <li className="nav-link"><Link to='/logout'>Logout</Link></li>
-                </div>
-
-                <div id='searchbar'>
-                <SearchBar/>
-                </div>
+                    <li className="nav-link"><Link onClick={handleLogout} to='/logout'>Logout</Link></li>
+                </div>    
             </div>
-         
-
-            </nav>
+        </nav>
             
-        </div>
-        </>
     )
 
 }

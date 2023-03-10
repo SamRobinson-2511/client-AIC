@@ -63,3 +63,221 @@ import {useReducer, useEffect} from 'react'
     //         onInput={changeHandler}
     //         value={inputState.value}/>
     //     )
+
+
+
+    /   return (
+//     <>
+    
+//       <div className='main'>
+//         <div className="container-fluid">
+//           <NavBar/>
+//           <Switch>
+
+//           <Route path = '/'>
+//             <Login/>
+//           </Route>
+
+        
+            
+//           {/* { currentForm === 'login' ? <Login onFormSwitch={toggleForm}/> : <Register onFormSwitch={toggleForm} />} */}
+          
+
+//           <Route exact path='/register'>
+//             <Register />
+//           </Route>
+
+//           <Route path='/viewers/:id/update'>
+//             <EditProfile />
+//           </Route>
+//           <Route path='/logout'>
+//             <Logout />
+//           </Route> 
+//           <Route path='/create'>
+//             <Create />
+//           </Route>
+//           <Route  path="/galleries/:id/">
+//             <GalleryDetail/>
+//           </Route>
+//           <Route  path="/galleries/:id/destroy">
+//             <GalleryCard />
+//           </Route>
+//           <Route path='/galleries/new'>
+//             <NewGalleryForm/>
+//           </Route>
+//           <Route path='/galleries/:id/edit'>
+//             <EditGalleryForm/>
+//           </Route>
+//           <Route path="/galleries">
+//             <GalleriesList />
+//             <GalleryCard/>
+//           </Route>
+//           {/* arts routes */}
+//           <Route path="/arts">
+//             <ArtList/>
+//           </Route>
+//           <Route path="/arts/:id">
+//             <ArtCardDetails/>
+//           </Route>
+
+//           {/* <Route path="/arts/search_arts">
+//             <ArtCard/>
+//           </Route> */}
+//           <Route exact path='/visits'>
+//             <VisitsList visitsUrl={visitsUrl}/>
+//             {/* <NewVisitForm 
+//               newVisitsUrl={newVisitsUrl}
+//               postReq={postReq}
+//             /> */}
+//           </Route>
+//           <Route path='/visits/:id'>
+//             <VisitDetails/>
+//           </Route>
+
+//           <Route exact path='arts/exhibitions'>
+//             <Exhibitions/>
+//           </Route>
+
+//           <Route exact path="/about">
+//             <About/>
+//           </Route>
+
+
+
+//           <Route path='*'>
+//             <NotFound/>
+//           </Route>
+
+//       </Switch>
+//       </div>  
+//     </div>
+//     <Footer/>
+//     </>
+
+//   ); 
+// }
+
+// export default App;
+
+
+//  {/* <GalleriesList 
+//         galleries={galleries}
+//         onDeleteGallery={handleDeleteGallery}
+//         onAddGallery={addGallery}
+//         // onUpdateGallery={handleUpdateGallery}
+//       /> */}
+
+      // <NewGalleryForm />
+
+
+      // { 
+      //   currentForm === 'login' ? 
+      //   <Login onFormSwitch={toggleForm}/> 
+      //   : 
+      //   <Register onFormSwitch={toggleForm} />
+      //   }  
+
+      // {/* { 
+      //   currentForm === 'login' ? 
+      //   <Login onFormSwitch={toggleForm}/> 
+      //   : 
+      //   <Register onFormSwitch={toggleForm} />
+      // }   */}
+
+      //handle login
+  // const handleLogin = (e) => {
+  //   e.preventDefault()
+  //   fetch('/login', {
+  //       method: 'POST', 
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         Accept: 'application/json'
+  //       }, 
+  //       body: JSON.stringify({
+  //         email: emailRef.current.value,
+  //         password: passwordRef.current.value,
+  //       })
+  //     })
+  //     .then( res => res.json())
+  //     .then( viewer => { 
+  //       localStorage.vid = viewer.vid 
+  //       console.log(viewer.vid)
+  //       history('/viewer_profile')
+  //   })
+  // }
+  
+  // handleRegister
+  // const handleRegister = (e) =>{
+  //   e.preventDefault()
+  //   fetch( '/register', {
+  //       method: 'POST', 
+  //       headers: { 
+  //         'Content-Type': 'application/json', 
+  //         Accept: 'application/json'
+  //        }, 
+  //        body: JSON.stringify({
+  //           first_name: firstNameRef.current.value, 
+  //           last_name: lastNameRef.current.value, 
+  //           email: emailRef.current.value,
+  //           password: passwordRef.current.value, 
+  //           zip_code: zipCodeRef.current.value,
+  //        })
+  //       })
+  //        .then( r => r.json())
+  //        .then( viewer => {
+  //           localStorage.vid = viewer.vid 
+  //           setViewer(viewer)
+  //        })
+  //       }
+    
+
+  // { currentForm === 'login' ? <Login onFormSwitch={toggleForm}/> : <Register onFormSwitch={toggleForm} />}
+
+
+
+  function handleCookbookSubmit(e){
+    alert('Cookbook Created!');
+    e.preventDefault()
+    const newCookbookInfo = {
+      user_id: user.id,
+      title: title,
+      cover_image: coverImage,
+    }
+    setErrors(null)
+
+    fetch(`/cookbooks`,{
+      method:'POST',
+      headers:{'Content-Type': 'application/json'},
+      body:JSON.stringify(newCookbookInfo)
+    })
+    .then(res => {
+      if(res.ok){
+        res.json().then(cookbookData => {
+          setCookbook(cookbookData)
+          navigate(`/my_cookbooks`)
+        })
+      }else {
+        res.json().then(errorInfo => setErrors((errorInfo.errors)))
+      }
+    })
+
+  }
+
+
+<><br/>
+    <center><form onSubmit={handleCookbookSubmit} id="form-container">
+        <div className="Recipe-form" >
+          
+        <label><strong>Cookbook Title 📚</strong></label><br/>
+          <input type="text" class="form-control" id="coookbookTitle" value={title} onChange={e => setTitle(e.target.value)} /><br/>
+        </div>
+
+        <div className="form-group">
+        <label><strong>Photo 🖼️</strong></label><br/>
+          <input type="text" class="form-control" id="photo" value={coverImage} onChange={e => setCoverImage(e.target.value)} /><br/>
+        </div>
+
+        <input type= 'submit' value ='Save Cookbook!' />
+      </form>
+      </center>
+    </>
