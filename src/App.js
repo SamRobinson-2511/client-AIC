@@ -236,12 +236,13 @@ function App() {
       <Switch>
       
         <Route exact path='/'><Login/></Route>
+        <Route path='/register'><Register/></Route>
         <Route path='/home'><Home/></Route>
         <Route path="/arts"><ArtList/></Route>
         <Route path="/arts/:id"><ArtCardDetails/></Route>
         <Route path='/visits'><VisitsList/></Route>
         <Route path='/visits/:id'><VisitDetails/></Route>
-        <Route path="/galleries"><GalleriesList/></Route>
+        <Route path="/galleries"><GalleriesList/><NewGalleryForm/></Route>
         <Route path="/galleries/:id/"><GalleryDetail/></Route>
         <Route path='/about'><About/></Route>
         <Route path='*'>Not Found</Route>

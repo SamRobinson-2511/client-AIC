@@ -38,11 +38,14 @@ function ArtCard({id, title, artist_display, image_id, gallery_title, category_t
 
     }
 
+    const handleDets = () => { 
+        artDets()
+    } 
+
 
 
    const galleryId = (e) => {
     setGallery(e.target.value)
-    
    }
 
    
@@ -122,7 +125,7 @@ function ArtCard({id, title, artist_display, image_id, gallery_title, category_t
                 <LikeButton />
                 <button onClick={handleAdd} title='add-to-gallery'>Add to gallery</button>
                 <button onClick={handleImageFetch} title='image-preview'> Image </button>
-                <p onClick={artDets}> artDets</p>
+                <button onClick={handleDets}> artDets</button>
 
                     
             <label htmlFor='galleries' className="gallery-options" id="galleries"></label>

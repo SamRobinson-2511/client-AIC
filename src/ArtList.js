@@ -22,6 +22,12 @@ function ArtList(){
   if (error !== null) {return <div>Error: {error.message}</div>}
   if (!isLoaded) {return <div> <h1>Loading...</h1></div>}
 
+  const artDets = (id) => {
+    console.log(id)
+
+  }
+
+
 
   const artCard = data.map(art => {
     return <ArtCard 
@@ -38,9 +44,6 @@ function ArtList(){
       />
   })
 
-  const artDets = (art) => {
-    console.log(art)
-  }
 
 
   return(
