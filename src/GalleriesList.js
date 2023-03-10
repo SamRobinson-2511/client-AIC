@@ -12,6 +12,7 @@ import { useHistory } from 'react-router-dom'
 import NewGalleryForm from './NewGalleryForm'
 import EditGalleryForm from './EditGalleryForm'
 import SearchBar from './components/SearchBar'
+import UpdateGallery from './UpdateGallery';
 // import GalleryCard from './pages/GalleryCard'
 
 // import useSearch from './hooks/search-hook'
@@ -68,6 +69,7 @@ function GalleriesList(){
             {galleryData}
         </div>        
             {/* <NewGalleryForm gallery={gallery}/> */}
+            {/* <UpdateGallery gallery={gallery}/> */}
             {/* <SearchBar data={data}/> */}
         </>
     )

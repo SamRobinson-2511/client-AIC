@@ -30,6 +30,7 @@ import Create from './components/Create'
 import ViewerProfile from './ViewerProfile'
 import EditProfile from './EditProfileForm';
 import NewGalleryForm from './NewGalleryForm'
+import UpdateGallery from './UpdateGallery';
 import GalleriesList from './GalleriesList'
 import VisitsList from './VisitsList';
 import VisitCard from './VisitCard'
@@ -46,6 +47,7 @@ import NotFound from './NotFound'
 
 // import NewVisitForm from './NewVisitForm';
 import VisitForm from './VisitForm'
+
 
 function App() {
   const { viewer } = useContext(ViewerContext)
@@ -242,7 +244,16 @@ function App() {
         <Route path="/arts/:id"><ArtCardDetails/></Route>
         <Route path='/visits'><VisitsList/></Route>
         <Route path='/visits/:id'><VisitDetails/></Route>
-        <Route path="/galleries"><GalleriesList/><NewGalleryForm/></Route>
+        <Route path="/galleries">
+
+          <GalleriesList/>
+
+          <NewGalleryForm/>
+
+          {/* <UpdateGallery/> */}
+          {/* <EditGalleryForm/> */}
+  
+        </Route>
         <Route path="/galleries/:id/"><GalleryDetail/></Route>
         <Route path='/about'><About/></Route>
         <Route path='*'>Not Found</Route>

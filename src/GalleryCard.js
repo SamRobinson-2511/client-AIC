@@ -1,5 +1,6 @@
 import { useHistory } from 'react-router-dom'
 import GalleryDetail from './pages/GalleryDetail'
+import UpdateGallery from './UpdateGallery'
 import DeleteButton from './components/DeleteButton'
 import LikeButton from './components/LikeButton'
 
@@ -14,6 +15,11 @@ function GalleryCard({id, image_url, title, description, image_id, arts, created
         setGallery(e.target.value)
         console.log(e.target.value)
         history.push(`/galleries/${id}`)
+    }
+
+
+    const handleUpdate = (e) => {
+        console.log(e)
     }
 
     const handleImage = (e) => {
@@ -38,6 +44,7 @@ function GalleryCard({id, image_url, title, description, image_id, arts, created
                     <div className="delete-button">
                         <DeleteButton url={`/galleries/${id}`}/>
                         <LikeButton url={`/galleries/${id}`}/>
+                        <UpdateGallery id={id} /> 
                     </div>
             </div>
     )

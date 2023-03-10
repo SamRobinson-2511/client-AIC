@@ -223,6 +223,16 @@ img {
   
 } */
 
+.edit-gallery-form{
+  background-color: maroon;
+  margin: auto;
+  width: 50%;
+  border: 3px solid grey;
+  padding: 10px;
+  text-align: center;
+
+}
+
 @media screen and (min-width: 600px) {
   .auth-form-container {
       padding: 5rem;
